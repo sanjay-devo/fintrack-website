@@ -58,6 +58,35 @@
       border-color: rgba(51,65,85,0.92);
     }
 
+    .password-input-wrapper {
+      position: relative;
+    }
+
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 0.75rem;
+      transform: translateY(-50%);
+      width: 2.75rem;
+      height: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      color: #0f172a;
+    }
+
+    .dark .password-toggle {
+      color: #ffffff;
+    }
+
+    .password-toggle svg {
+      display: block;
+    }
+
     /* Page Transitions */
     .page-transition {
       transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -87,14 +116,78 @@
 
 <body class="flex items-center justify-center min-h-screen sm:py-6">
 
+  <div id="authPage" class="page-transition page-active absolute inset-0 z-[90] bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-slate-950 border border-slate-200/70 dark:border-slate-800 shadow-2xl rounded-[32px] p-8 space-y-6">
+      <div class="space-y-2 text-center">
+        <p class="text-[11px] uppercase tracking-[0.32em] text-indigo-500">Secure access</p>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Welcome back</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Sign in or create a new account to manage your finances.</p>
+      </div>
+
+      <div class="flex items-center justify-between gap-2 rounded-full bg-slate-100 dark:bg-slate-900/80 p-1">
+        <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm">Login</button>
+        <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">Register</button>
+      </div>
+
+      <div id="authError" class="hidden rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm"></div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Email or mobile</label>
+            <input id="loginUserId" type="text" placeholder="Enter email or mobile" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Password</label>
+            <div class="password-input-wrapper">
+              <input id="loginPassword" type="password" placeholder="Enter password" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 pr-14 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+              <button type="button" id="loginPasswordToggle" onclick="togglePasswordVisibility('loginPassword','loginPasswordToggle')" aria-label="Show password" title="Show password" class="password-toggle transition-colors hover:text-slate-700 dark:hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full rounded-3xl bg-indigo-600 text-white py-3 text-sm font-semibold shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition">Sign in</button>
+      </form>
+
+      <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-5">
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Full name</label>
+            <input id="registerName" type="text" placeholder="John Doe" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Email or mobile</label>
+            <input id="registerUserId" type="text" placeholder="name@example.com or 9876543210" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Password</label>
+            <div class="password-input-wrapper">
+              <input id="registerPassword" type="password" placeholder="Create password" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 pr-14 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+              <button type="button" id="registerPasswordToggle" onclick="togglePasswordVisibility('registerPassword','registerPasswordToggle')" aria-label="Show password" title="Show password" class="password-toggle transition-colors hover:text-slate-700 dark:hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full rounded-3xl bg-slate-900 text-white py-3 text-sm font-semibold shadow-lg shadow-slate-900/15 hover:bg-slate-800 transition">Create account</button>
+      </form>
+
+      <p class="text-center text-xs text-slate-500 dark:text-slate-400">Your login details are stored securely in the database. This demo uses simple credentials for quick access.</p>
+    </div>
+  </div>
+
   <div class="w-full max-w-md bg-gray-50 dark:bg-gray-900 h-[100dvh] sm:h-auto sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl sm:border-[8px] border-gray-800 dark:border-gray-800 overflow-hidden relative flex flex-col mx-auto">
 
-    <div id="dashboard" class="page-transition page-active flex flex-col p-6 h-full overflow-hidden relative">
+    <div id="dashboard" class="page-transition page-hidden flex flex-col p-6 h-full overflow-hidden relative">
       
       <header class="flex justify-between items-center mb-6 pt-2 shrink-0 z-20">
         <div>
           <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider mb-1">Overview</p>
           <h2 class="font-bold text-2xl text-gray-800 dark:text-white leading-none">My Finances</h2>
+          <p id="welcomeMessage" class="text-sm text-gray-500 dark:text-gray-400 mt-1 hidden"></p>
         </div>
         
         <button onclick="toggleTheme()" class="w-11 h-11 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700">
@@ -207,22 +300,93 @@
   </div>
 
   <script>
-    // --- Data Initialization & Safety ---
+    const FIREBASE_BASE = 'https://fintrack-website-default-rtdb.firebaseio.com/';
+    const AUTH_STORAGE_KEY = 'fintrack_user';
+    let currentUser = null;
     let transactions = [];
-    try {
-      const data = localStorage.getItem('finance_data');
-      if (data) transactions = JSON.parse(data);
-    } catch (e) {
-      console.error("Local storage parse error:", e);
-      transactions = [];
-    }
 
-    const saveToLocalStorage = () => {
-      try {
-        localStorage.setItem('finance_data', JSON.stringify(transactions));
-      } catch(e) { console.error("Error saving data:", e); }
+    const normalizeUserId = (value) => {
+      return value.trim().toLowerCase().replace(/[@.#$\[\]\/]/g, '_');
     };
-    
+
+    const getUserRefUrl = (userId) => {
+      return `${FIREBASE_BASE}users/${encodeURIComponent(normalizeUserId(userId))}.json`;
+    };
+
+    const getUserTransactionsUrl = (userId) => {
+      return `${FIREBASE_BASE}users/${encodeURIComponent(normalizeUserId(userId))}/transactions.json`;
+    };
+
+    const getTransactionRefUrl = (userId, transactionId) => {
+      return `${FIREBASE_BASE}users/${encodeURIComponent(normalizeUserId(userId))}/transactions/${encodeURIComponent(transactionId)}.json`;
+    };
+
+    const fetchUserTransactions = async () => {
+      if (!currentUser) return [];
+      const response = await fetch(getUserTransactionsUrl(currentUser.id));
+      if (!response.ok) {
+        throw new Error('Unable to load transactions');
+      }
+      const data = await response.json();
+      if (!data) return [];
+      return Object.entries(data).map(([id, tx]) => ({
+        id: /^\d+$/.test(id) ? Number(id) : id,
+        ...tx
+      }));
+    };
+
+    const loadTransactions = async () => {
+      transactions = [];
+      if (!currentUser) return;
+      try {
+        transactions = await fetchUserTransactions();
+      } catch (e) {
+        console.error('Error loading transactions:', e);
+        transactions = [];
+      }
+    };
+
+    const saveTransactionToFirebase = async (transaction) => {
+      if (!currentUser) throw new Error('No authenticated user');
+      const response = await fetch(getTransactionRefUrl(currentUser.id, transaction.id), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(transaction)
+      });
+      if (!response.ok) {
+        throw new Error('Unable to save transaction');
+      }
+      return response.json();
+    };
+
+    const deleteTransactionFromFirebase = async (transactionId) => {
+      if (!currentUser) throw new Error('No authenticated user');
+      const response = await fetch(getTransactionRefUrl(currentUser.id, transactionId), {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Unable to delete transaction');
+      }
+      return response.json();
+    };
+
+    const saveSession = (user) => {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+    };
+
+    const getSession = () => {
+      try {
+        const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch(e) {
+        return null;
+      }
+    };
+
+    const clearSession = () => {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+    };
+
     const getTodayString = () => new Date().toISOString().split('T')[0];
 
     const suggestions = {
@@ -231,20 +395,229 @@
     };
     let activeSuggestion = null;
 
+    const showAuthError = (message) => {
+      const errorNode = document.getElementById('authError');
+      if (!message) {
+        errorNode.classList.add('hidden');
+        errorNode.textContent = '';
+        return;
+      }
+      errorNode.textContent = message;
+      errorNode.classList.remove('hidden');
+    };
+
+    const setAuthButtonState = (button, loading, label) => {
+      if (!button) return;
+      button.disabled = loading;
+      button.textContent = loading ? 'Working...' : label;
+      button.classList.toggle('opacity-60', loading);
+    };
+
+    const switchAuthTab = (tab) => {
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const loginTab = document.getElementById('authTabLogin');
+      const registerTab = document.getElementById('authTabRegister');
+
+      showAuthError('');
+
+      if (tab === 'register') {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        loginTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200';
+        registerTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm';
+        resetPasswordToggle('loginPassword', 'loginPasswordToggle');
+      } else {
+        registerForm.classList.add('hidden');
+        loginForm.classList.remove('hidden');
+        registerTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200';
+        loginTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm';
+        resetPasswordToggle('registerPassword', 'registerPasswordToggle');
+      }
+    };
+
+    const getPasswordToggleIcon = (isVisible) => {
+      if (isVisible) {
+        return `
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 011.46-3.04M6.68 6.68A9.965 9.965 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.05 10.05 0 01-1.02 2.24M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
+          </svg>`;
+      }
+      return `
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>`;
+    };
+
+    const togglePasswordVisibility = (fieldId, buttonId) => {
+      const input = document.getElementById(fieldId);
+      const button = document.getElementById(buttonId);
+      if (!input || !button) return;
+      const isVisible = input.type === 'password';
+      input.type = isVisible ? 'text' : 'password';
+      button.innerHTML = getPasswordToggleIcon(isVisible);
+      button.setAttribute('aria-label', isVisible ? 'Hide password' : 'Show password');
+      button.title = isVisible ? 'Hide password' : 'Show password';
+    };
+
+    const resetPasswordToggle = (fieldId, buttonId) => {
+      const input = document.getElementById(fieldId);
+      const button = document.getElementById(buttonId);
+      if (!input || !button) return;
+      input.type = 'password';
+      button.innerHTML = getPasswordToggleIcon(false);
+      button.setAttribute('aria-label', 'Show password');
+      button.title = 'Show password';
+    };
+
+    const updateWelcomeMessage = () => {
+      const welcomeNode = document.getElementById('welcomeMessage');
+      if (!currentUser || !welcomeNode) return;
+      welcomeNode.textContent = `Hello, ${currentUser.name}`;
+      welcomeNode.classList.remove('hidden');
+    };
+
+    const showAuthPage = () => {
+      const authPage = document.getElementById('authPage');
+      const dashboard = document.getElementById('dashboard');
+      authPage.classList.replace('page-hidden', 'page-active');
+      dashboard.classList.replace('page-active', 'page-hidden');
+    };
+
+    const showDashboard = () => {
+      const authPage = document.getElementById('authPage');
+      const dashboard = document.getElementById('dashboard');
+      authPage.classList.replace('page-active', 'page-hidden');
+      dashboard.classList.replace('page-hidden', 'page-active');
+    };
+
+    const fetchUserData = async (userId) => {
+      const url = getUserRefUrl(userId);
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Unable to reach the database');
+      }
+      return response.json();
+    };
+
+    const setCurrentUser = (user) => {
+      currentUser = {
+        id: user.id,
+        key: normalizeUserId(user.id),
+        name: user.name || user.id
+      };
+      saveSession(currentUser);
+      updateWelcomeMessage();
+    };
+
+    const handleRegister = async (event) => {
+      event.preventDefault();
+      showAuthError('');
+
+      const name = document.getElementById('registerName').value.trim();
+      const userId = document.getElementById('registerUserId').value.trim();
+      const password = document.getElementById('registerPassword').value.trim();
+      const form = event.target.closest('form');
+      const button = form ? form.querySelector('button[type="submit"]') : null;
+
+      if (!name || !userId || !password) {
+        showAuthError('Please complete all fields.');
+        return;
+      }
+      if (password.length < 6) {
+        showAuthError('Password must be at least 6 characters long.');
+        return;
+      }
+
+      setAuthButtonState(button, true, 'Create account');
+      try {
+        const existing = await fetchUserData(userId);
+        if (existing) {
+          showAuthError('An account already exists with this email or mobile.');
+          return;
+        }
+
+        const payload = {
+          id: userId,
+          name,
+          password
+        };
+        const response = await fetch(getUserRefUrl(userId), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error('Unable to create account');
+        }
+
+        setCurrentUser(payload);
+        await loadTransactions();
+        renderApp();
+        showDashboard();
+      } catch (error) {
+        const message = error.message.includes('Unable to reach') ? 'Unable to reach the authentication server. Please try again later.' : error.message;
+        showAuthError(message || 'Unable to create account.');
+      } finally {
+        setAuthButtonState(button, false, 'Create account');
+      }
+    };
+
+    const handleLogin = async (event) => {
+      event.preventDefault();
+      showAuthError('');
+
+      const userId = document.getElementById('loginUserId').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const form = event.target.closest('form');
+      const button = form ? form.querySelector('button[type="submit"]') : null;
+
+      if (!userId || !password) {
+        showAuthError('Please enter both email/mobile and password.');
+        return;
+      }
+
+      setAuthButtonState(button, true, 'Sign in');
+      try {
+        const user = await fetchUserData(userId);
+        if (!user) {
+          showAuthError('No account was found for that email or mobile.');
+          return;
+        }
+        if (user.password !== password) {
+          showAuthError('The password is incorrect. Please try again.');
+          return;
+        }
+
+        setCurrentUser(user);
+        await loadTransactions();
+        renderApp();
+        showDashboard();
+      } catch (error) {
+        const message = error.message.includes('Unable to reach') ? 'Unable to reach the authentication server. Please try again later.' : 'Unable to sign in. Please check your input.';
+        showAuthError(message);
+      } finally {
+        setAuthButtonState(button, false, 'Sign in');
+      }
+    };
+
     // --- Custom Modal Logic ---
     let modalConfirmAction = null;
 
     function showModal(title, message, isConfirm, btnColorClass, btnText, callback) {
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalMessage').innerText = message;
-      
+
       const btnCancel = document.getElementById('btnModalCancel');
       const btnConfirm = document.getElementById('btnModalConfirm');
 
       btnConfirm.className = `px-5 py-2.5 rounded-xl text-white font-bold shadow-md active:scale-95 transition ${btnColorClass}`;
       btnConfirm.innerText = btnText;
       btnCancel.style.display = isConfirm ? 'block' : 'none';
-      
+
       modalConfirmAction = callback;
 
       const modal = document.getElementById('customModal');
@@ -260,7 +633,7 @@
       modal.classList.add('opacity-0', 'pointer-events-none');
       modalBox.classList.remove('scale-100');
       modalBox.classList.add('scale-95');
-      modalConfirmAction = null; 
+      modalConfirmAction = null;
     }
 
     document.getElementById('btnModalConfirm').onclick = function() {
@@ -294,7 +667,6 @@
 
       if (isDark) document.documentElement.classList.add('dark');
       else document.documentElement.classList.remove('dark');
-      
       updateThemeUI(isDark);
     }
 
@@ -320,15 +692,19 @@
 
     function deleteTransaction(id) {
       showModal(
-        "Delete Record", 
-        "Are you sure you want to delete this transaction?", 
-        true, 
-        "bg-red-500", 
-        "Delete", 
-        () => {
-          transactions = transactions.filter(tx => tx.id !== id);
-          saveToLocalStorage();
-          renderApp();
+        "Delete Record",
+        "Are you sure you want to delete this transaction?",
+        true,
+        "bg-red-500",
+        "Delete",
+        async () => {
+          try {
+            await deleteTransactionFromFirebase(id);
+            transactions = transactions.filter(tx => tx.id !== id);
+            renderApp();
+          } catch (e) {
+            showModal("Unable to delete", "Unable to delete transaction. Please try again.", false, "bg-indigo-600", "OK", null);
+          }
         }
       );
     }
@@ -337,10 +713,9 @@
       const todayStr = getTodayString();
       let totalBal = 0, totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0;
       const activityList = document.getElementById("activityList");
-      
       activityList.innerHTML = "";
 
-      if(transactions.length === 0) {
+      if (transactions.length === 0) {
         activityList.innerHTML = `
           <div class="flex flex-col items-center justify-center py-10 px-4 text-center opacity-90">
             <div class="w-20 h-20 bg-gray-200/70 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 shadow-inner">
@@ -352,7 +727,6 @@
         `;
       }
 
-      // Sort newest to oldest
       const sortedTxs = [...transactions].sort((a, b) => b.id - a.id);
 
       sortedTxs.forEach(tx => {
@@ -370,10 +744,10 @@
 
         const isIncome = tx.type === "income";
         const iconColor = isIncome ? "text-green-500 bg-green-100 dark:bg-green-900/30" : "text-red-500 bg-red-100 dark:bg-red-900/30";
-        const iconSvg = isIncome 
+        const iconSvg = isIncome
           ? `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>`
           : `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>`;
-        
+
         const sign = isIncome ? "+" : "-";
         const amountColor = isIncome ? "text-green-600 dark:text-green-400" : "text-gray-900 dark:text-gray-100";
         const dateDisplay = formatTransactionDate(tx.dateStr);
@@ -400,7 +774,6 @@
         activityList.appendChild(li);
       });
 
-      // Update Top Card UI
       document.getElementById("totalBalance").innerText = formatCurrency(totalBal);
       document.getElementById("todayExpense").innerText = formatCurrency(todayExp);
       document.getElementById("totalExpense").innerText = `Total: ${formatCurrency(totalExp)}`;
@@ -471,7 +844,7 @@
       setTimeout(() => { document.getElementById("amount").focus(); }, 350);
     }
 
-    function addTransaction() {
+    async function addTransaction() {
       let title = document.getElementById("title").value.trim();
       const amount = parseFloat(document.getElementById("amount").value);
       const type = document.getElementById("txType").value;
@@ -481,28 +854,45 @@
         return;
       }
 
-      // Auto-fill description if left blank
       if (!title) {
         title = (type === 'expense') ? 'Expense' : 'Income';
       }
 
       activeSuggestion = null;
-      transactions.push({
+      const transaction = {
         id: Date.now(),
-        title: title,
-        amount: amount,
-        type: type,
+        title,
+        amount,
+        type,
         dateStr: getTodayString()
-      });
+      };
 
-      saveToLocalStorage();
-      renderApp();
-      togglePage("dashboard");
+      try {
+        await saveTransactionToFirebase(transaction);
+        transactions.push(transaction);
+        renderApp();
+        togglePage("dashboard");
+      } catch (e) {
+        showModal("Unable to save", "Unable to save transaction. Please try again.", false, "bg-indigo-600", "OK", null);
+      }
     }
 
-    // --- On Load ---
-    initTheme();
-    renderApp();
+    const initApp = async () => {
+      initTheme();
+      const session = getSession();
+      if (session && session.id) {
+        currentUser = session;
+        updateWelcomeMessage();
+        await loadTransactions();
+        renderApp();
+        showDashboard();
+      } else {
+        showAuthPage();
+        switchAuthTab('login');
+      }
+    };
+
+    initApp();
   </script>
 </body>
 </html>
