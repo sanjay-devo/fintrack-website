@@ -44,21 +44,21 @@ The FinTrack app uses a favicon link added to the `<head>` section of every HTML
 
 ## Sitemap
 
-A `sitemap.xml` file is included for search engines and crawlers. It lists the main app pages and their relative crawl priority.
+A `sitemap.xml` file is included for search engines and crawlers. It lists the main app pages and their relative crawl priority for the live deployment.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://yourdomain.com/index.html</loc>
+    <loc>http://ft.indiacybercafe.com/index.html</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/login.html</loc>
+    <loc>http://ft.indiacybercafe.com/login.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/register.html</loc>
+    <loc>http://ft.indiacybercafe.com/register.html</loc>
     <priority>0.8</priority>
   </url>
 </urlset>
