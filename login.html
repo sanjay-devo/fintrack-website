@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Login — FinTrack</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+      background-color: #f3f4f6;
+      color-scheme: light dark;
+    }
+    .dark body {
+      background-color: #030712;
+    }
+    * {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+                  box-shadow 0.25s ease, transform 0.2s ease;
+    }
+    button,
+    input {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+                  box-shadow 0.25s ease, transform 0.2s ease;
+    }
+    button:focus-visible,
+    input:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.18);
+    }
+
+    .password-input-wrapper {
+      position: relative;
+    }
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 0.75rem;
+      transform: translateY(-50%);
+      width: 2.75rem;
+      height: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      color: #0f172a;
+    }
+    .dark .password-toggle {
+      color: #ffffff;
+    }
+    .password-toggle svg {
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen sm:py-6">
+  <div class="w-full max-w-md bg-white dark:bg-slate-950 border border-slate-200/70 dark:border-slate-800 shadow-2xl rounded-[32px] p-8 space-y-6">
+    <div class="space-y-2 text-center">
+      <p class="text-[11px] uppercase tracking-[0.32em] text-indigo-500">Secure access</p>
+      <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Welcome back</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400">Sign in to manage your finances.</p>
+    </div>
+
+    <div id="authError" class="hidden rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm"></div>
+
+    <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Email or mobile</label>
+          <input id="loginUserId" type="text" placeholder="Enter email or mobile" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Password</label>
+          <div class="password-input-wrapper">
+            <input id="loginPassword" type="password" placeholder="Enter password" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 pr-14 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+            <button type="button" id="loginPasswordToggle" onclick="togglePasswordVisibility('loginPassword','loginPasswordToggle')" aria-label="Show password" title="Show password" class="password-toggle transition-colors hover:text-slate-700 dark:hover:text-white">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="w-full rounded-3xl bg-indigo-600 text-white py-3 text-sm font-semibold shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition">Sign in</button>
+    </form>
+
+    <p class="text-center text-sm text-slate-500 dark:text-slate-400">Don’t have an account? <a href="register.html" class="font-semibold text-indigo-600 hover:text-indigo-700">Register</a></p>
+  </div>
+
+  <script>
+    const FIREBASE_BASE = 'https://fintrack-website-default-rtdb.firebaseio.com/';
+    const AUTH_STORAGE_KEY = 'fintrack_user';
+
+    const normalizeUserId = (value) => {
+      return value.trim().toLowerCase().replace(/[@.#$\[\]\/]/g, '_');
+    };
+
+    const getUserRefUrl = (userId) => {
+      return `${FIREBASE_BASE}users/${encodeURIComponent(normalizeUserId(userId))}.json`;
+    };
+
+    const normalizeMobile = (value) => {
+      return value.replace(/\D/g, '');
+    };
+
+    const validateEmail = (email) => {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    };
+
+    const validateMobile = (mobile) => {
+      const cleaned = normalizeMobile(mobile);
+      return /^\d{10}$/.test(cleaned);
+    };
+
+    const getEmailIndexUrl = (email) => {
+      return `${FIREBASE_BASE}email_index/${encodeURIComponent(normalizeUserId(email))}.json`;
+    };
+
+    const getMobileIndexUrl = (mobile) => {
+      return `${FIREBASE_BASE}mobile_index/${encodeURIComponent(normalizeMobile(mobile))}.json`;
+    };
+
+    const saveSession = (user) => {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+    };
+
+    const getSession = () => {
+      try {
+        const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    };
+
+    const showAuthError = (message) => {
+      const authError = document.getElementById('authError');
+      if (!message) {
+        authError.classList.add('hidden');
+        authError.textContent = '';
+        return;
+      }
+      authError.textContent = message;
+      authError.classList.remove('hidden');
+    };
+
+    const getPasswordToggleIcon = (isVisible) => {
+      if (isVisible) {
+        return `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.747-3.191M6.12 6.12A9.97 9.97 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.97 9.97 0 01-1.182 2.78M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`;
+      }
+      return `
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.747-3.191M6.12 6.12A9.97 9.97 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.97 9.97 0 01-1.182 2.78M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`;
+    };
+
+    const togglePasswordVisibility = (fieldId, buttonId) => {
+      const input = document.getElementById(fieldId);
+      const button = document.getElementById(buttonId);
+      if (!input || !button) return;
+      const isVisible = input.type === 'password';
+      input.type = isVisible ? 'text' : 'password';
+      button.innerHTML = getPasswordToggleIcon(isVisible);
+      button.setAttribute('aria-label', isVisible ? 'Hide password' : 'Show password');
+      button.title = isVisible ? 'Hide password' : 'Show password';
+    };
+
+    const fetchUserData = async (userId) => {
+      const response = await fetch(getUserRefUrl(userId));
+      if (!response.ok) {
+        throw new Error('Unable to reach authentication server.');
+      }
+      return response.json();
+    };
+
+    const updateTheme = () => {
+      let isDark = false;
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+      } catch (e) {}
+      document.documentElement.classList.toggle('dark', isDark);
+    };
+
+    const redirectToDashboard = () => {
+      history.replaceState({ page: 'dashboard' }, '', 'index.html');
+      window.location.replace('index.html');
+    };
+
+    const initAuth = () => {
+      updateTheme();
+      const session = getSession();
+      if (session && session.id) {
+        redirectToDashboard();
+        return;
+      }
+      history.replaceState({ page: 'auth' }, '', window.location.href);
+      window.addEventListener('popstate', () => {
+        const session = getSession();
+        if (session && session.id) {
+          redirectToDashboard();
+        }
+      });
+    };
+
+    const setCurrentUser = (user) => {
+      const sessionUser = {
+        id: user.id,
+        key: normalizeUserId(user.id),
+        name: user.name || user.id
+      };
+      saveSession(sessionUser);
+    };
+
+    const handleLogin = async (event) => {
+      event.preventDefault();
+      showAuthError('');
+
+      const identifier = document.getElementById('loginUserId').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      if (!identifier || !password) {
+        showAuthError('Please enter both email/mobile and password.');
+        return;
+      }
+
+      const isEmailLogin = identifier.includes('@');
+      if (isEmailLogin && !validateEmail(identifier)) {
+        showAuthError('Please enter a valid email address.');
+        return;
+      }
+      if (!isEmailLogin && !validateMobile(identifier)) {
+        showAuthError('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+
+      try {
+        const indexUrl = isEmailLogin ? getEmailIndexUrl(identifier) : getMobileIndexUrl(identifier);
+        const indexResponse = await fetch(indexUrl);
+        if (!indexResponse.ok) {
+          throw new Error('Unable to reach authentication server.');
+        }
+
+        const userId = await indexResponse.json();
+        if (!userId) {
+          showAuthError('No account found with this email or mobile.');
+          return;
+        }
+
+        const user = await fetchUserData(userId);
+        if (!user || !user.id) {
+          showAuthError('No account found with this email or mobile.');
+          return;
+        }
+        if (user.password !== password) {
+          showAuthError('Incorrect password.');
+          return;
+        }
+
+        setCurrentUser(user);
+        redirectToDashboard();
+      } catch (error) {
+        showAuthError(error.message || 'Unable to sign in. Please try again.');
+      }
+    };
+
+    initAuth();
+  </script>
+</body>
+</html>

@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Modern Finance App</title>
+  <title>FinTrack Dashboard</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -41,7 +41,6 @@
       transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease,
                   box-shadow 0.25s ease, transform 0.2s ease;
     }
-
     button:focus-visible,
     input:focus-visible {
       outline: none;
@@ -61,7 +60,6 @@
     .password-input-wrapper {
       position: relative;
     }
-
     .password-toggle {
       position: absolute;
       top: 50%;
@@ -78,11 +76,9 @@
       padding: 0;
       color: #0f172a;
     }
-
     .dark .password-toggle {
       color: #ffffff;
     }
-
     .password-toggle svg {
       display: block;
     }
@@ -97,7 +93,6 @@
       border-color: rgba(71,85,105,0.55);
     }
 
-    /* Page Transitions */
     .page-transition {
       transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -118,110 +113,46 @@
       height: 100%;
     }
 
-    /* Scrollbar Hidden */
     ::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen sm:py-6">
-
-  <div id="authPage" class="page-transition page-active absolute inset-0 z-[90] bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white dark:bg-slate-950 border border-slate-200/70 dark:border-slate-800 shadow-2xl rounded-[32px] p-8 space-y-6">
-      <div class="space-y-2 text-center">
-        <p class="text-[11px] uppercase tracking-[0.32em] text-indigo-500">Secure access</p>
-        <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Welcome back</h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400">Sign in or create a new account to manage your finances.</p>
-      </div>
-
-      <div class="flex items-center justify-between gap-2 rounded-full bg-slate-100 dark:bg-slate-900/80 p-1">
-        <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm">Login</button>
-        <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">Register</button>
-      </div>
-
-      <div id="authError" class="hidden rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm"></div>
-
-      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
-        <div class="space-y-3">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Email or mobile</label>
-            <input id="loginUserId" type="text" placeholder="Enter email or mobile" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Password</label>
-            <div class="password-input-wrapper">
-              <input id="loginPassword" type="password" placeholder="Enter password" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 pr-14 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
-              <button type="button" id="loginPasswordToggle" onclick="togglePasswordVisibility('loginPassword','loginPasswordToggle')" aria-label="Show password" title="Show password" class="password-toggle transition-colors hover:text-slate-700 dark:hover:text-white">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" class="w-full rounded-3xl bg-indigo-600 text-white py-3 text-sm font-semibold shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition">Sign in</button>
-      </form>
-
-      <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-5">
-        <div class="space-y-3">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Full name</label>
-            <input id="registerName" type="text" placeholder="John Doe" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Email or mobile</label>
-            <input id="registerUserId" type="text" placeholder="name@example.com or 9876543210" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Password</label>
-            <div class="password-input-wrapper">
-              <input id="registerPassword" type="password" placeholder="Create password" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 pr-14 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
-              <button type="button" id="registerPasswordToggle" onclick="togglePasswordVisibility('registerPassword','registerPasswordToggle')" aria-label="Show password" title="Show password" class="password-toggle transition-colors hover:text-slate-700 dark:hover:text-white">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" class="w-full rounded-3xl bg-slate-900 text-white py-3 text-sm font-semibold shadow-lg shadow-slate-900/15 hover:bg-slate-800 transition">Create account</button>
-      </form>
-
-      <p class="text-center text-xs text-slate-500 dark:text-slate-400">Your login details are stored securely in the database. This demo uses simple credentials for quick access.</p>
-    </div>
-  </div>
-
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="w-full lg:max-w-[1200px] bg-gray-50 dark:bg-gray-900 min-h-[100dvh] sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl overflow-hidden relative flex flex-col mx-auto px-4 sm:px-6 lg:px-8">
-
     <div id="dashboard" class="page-transition page-hidden flex flex-col p-4 sm:p-6 lg:p-10 h-full overflow-hidden relative">
-      
       <header class="dashboard-header flex items-center justify-between gap-3 sm:flex-row mb-6 sm:mb-8 p-4 sm:p-5 lg:p-6 rounded-[28px] shadow-sm z-20">
         <div class="flex-1 min-w-0">
           <p id="welcomeMessage" class="font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 dark:text-white leading-tight whitespace-nowrap">
             Hello,&nbsp;<span id="welcomeNameInitial" class="sm:hidden"></span><span id="welcomeNameFull" class="hidden sm:inline"></span>
           </p>
         </div>
-        
-        <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700">
-          <svg id="icon-moon" class="w-5 h-5 transition-opacity duration-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-          <svg id="icon-sun" class="w-6 h-6 hidden transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-        </button>
+        <div class="flex items-center gap-3">
+          <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700">
+            <svg id="icon-moon" class="w-5 h-5 transition-opacity duration-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="icon-sun" class="w-6 h-6 hidden transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          </button>
+          <button onclick="logout()" class="hidden sm:inline-flex items-center justify-center px-4 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700">
+            Logout
+          </button>
+        </div>
       </header>
 
       <div class="shrink-0 bg-gradient-to-br from-indigo-600 to-indigo-800 dark:from-indigo-900 dark:to-gray-800 rounded-[24px] p-4 sm:p-6 text-white shadow-xl dark:shadow-none mb-6 relative overflow-hidden z-20">
         <div class="absolute -right-6 -top-6 w-28 h-28 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
 
         <p class="text-indigo-100 text-xs sm:text-sm font-medium mb-1 relative z-10 opacity-90">Total Balance</p>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight relative z-10 mb-5" id="totalBalance">₹ 0</h1>
-        
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight relative z-10 mb-5" id="totalBalance"> 0</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 sm:pt-5 border-t border-white/20 relative z-10">
           <div class="rounded-[24px] bg-white/10 p-4 sm:p-5">
             <p class="text-[10px] uppercase tracking-widest text-red-100/90">Today expense</p>
-            <p class="mt-3 text-2xl sm:text-3xl font-extrabold text-red-100 leading-none" id="todayExpense">₹ 0</p>
-            <p class="mt-3 text-[11px] text-indigo-100/70">Total: <span id="totalExpense" class="font-semibold text-indigo-100">₹ 0</span></p>
+            <p class="mt-3 text-2xl sm:text-3xl font-extrabold text-red-100 leading-none" id="todayExpense"> 0</p>
+            <p class="mt-3 text-[11px] text-indigo-100/70">Total: <span id="totalExpense" class="font-semibold text-indigo-100"> 0</span></p>
           </div>
           <div class="rounded-[24px] bg-white/10 p-4 sm:p-5">
             <p class="text-[10px] uppercase tracking-widest text-green-100/90">Today income</p>
-            <p class="mt-3 text-2xl sm:text-3xl font-extrabold text-green-100 leading-none" id="todayIncome">₹ 0</p>
-            <p class="mt-3 text-[11px] text-indigo-100/70">Total: <span id="totalIncome" class="font-semibold text-indigo-100">₹ 0</span></p>
+            <p class="mt-3 text-2xl sm:text-3xl font-extrabold text-green-100 leading-none" id="todayIncome"> 0</p>
+            <p class="mt-3 text-[11px] text-indigo-100/70">Total: <span id="totalIncome" class="font-semibold text-indigo-100"> 0</span></p>
           </div>
         </div>
       </div>
@@ -233,10 +164,9 @@
           </div>
           Expense
         </button>
-
         <button onclick="openAddPage('income')" class="w-full flex-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 py-3.5 rounded-2xl font-semibold flex justify-center items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95">
-          <div class="bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 p-1.5 rounded-full">
-             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+          <div class="bg-gray-100 dark:bg-gray-700 p-1.5 rounded-full">
+            <svg class="w-5 h-5 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 5v14m7-7H5"></path></svg>
           </div>
           Income
         </button>
@@ -253,45 +183,34 @@
       <button onclick="openAddPage('expense')" class="absolute bottom-6 right-6 w-16 h-16 bg-indigo-600 text-white rounded-full shadow-[0_8px_20px_rgba(79,70,229,0.5)] flex items-center justify-center hover:bg-indigo-700 active:scale-90 active:shadow-sm transition-all duration-200 z-[60]">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
       </button>
-
     </div>
 
-
     <div id="addPage" class="page-transition page-hidden h-full flex flex-col bg-gray-50 dark:bg-gray-900 absolute top-0 left-0 w-full z-[80]">
-      
       <header class="p-4 sm:p-6 flex items-center border-b border-gray-200/60 dark:border-gray-800 pt-6 sm:pt-6 shrink-0 bg-white dark:bg-gray-900 z-10 shadow-sm">
         <button onclick="togglePage('dashboard')" class="p-2 -ml-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 transition active:scale-90">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
         </button>
         <h2 class="font-bold text-lg text-center flex-1 pr-6 text-gray-800 dark:text-white">New Transaction</h2>
       </header>
 
       <div class="p-6 space-y-6 flex-1 overflow-y-auto no-scrollbar bg-gray-50 dark:bg-gray-900">
-        
         <div class="flex bg-gray-200/80 dark:bg-gray-800 p-1.5 rounded-2xl">
-          <button id="btnExpense" onclick="setTransactionType('expense')" class="flex-1 py-3.5 text-sm font-bold rounded-xl transition-all">Expense</button>
-          <button id="btnIncome" onclick="setTransactionType('income')" class="flex-1 py-3.5 text-sm font-bold rounded-xl transition-all">Income</button>
+          <button id="btnExpense" type="button" onclick="setTransactionType('expense')" class="flex-1 py-3.5 text-sm font-semibold rounded-xl bg-red-600 text-white shadow-sm shadow-red-600/20 transition-all">Expense</button>
+          <button id="btnIncome" type="button" onclick="setTransactionType('income')" class="flex-1 py-3.5 text-sm font-semibold rounded-xl text-gray-500 dark:text-gray-400 bg-transparent transition-all">Income</button>
         </div>
         <input type="hidden" id="txType" value="expense">
 
         <div class="bg-white dark:bg-gray-800 p-6 rounded-[24px] shadow-sm border border-gray-100 dark:border-gray-700/50">
-          <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Amount (₹)</label>
-          <input id="amount" type="number" inputmode="decimal" placeholder="0" class="w-full text-5xl font-extrabold text-gray-800 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 border-none outline-none focus:ring-0 p-0 bg-transparent mb-6">
-          
-          <div class="h-px bg-gray-100 dark:bg-gray-700 w-full mb-6"></div>
-
-          <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Description (Optional)</label>
-          <input id="title" type="text" placeholder="What was this for?" class="w-full text-xl font-medium text-gray-800 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 border-none outline-none focus:ring-0 p-0 bg-transparent mb-4">
-          
-          <div id="suggestionsContainer" class="flex flex-wrap gap-2 mt-2"></div>
+          <label class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">Title</label>
+          <input id="title" type="text" placeholder="Add a title" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+          <label class="mt-5 block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">Amount</label>
+          <input id="amount" type="number" placeholder="0" class="w-full rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-500/20 outline-none" />
+          <div id="suggestionsContainer" class="mt-4 flex flex-wrap gap-2"></div>
         </div>
 
         <div class="pt-4 pb-8">
-          <button onclick="addTransaction()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl shadow-[0_8px_20px_rgba(79,70,229,0.3)] dark:shadow-none transition-all active:scale-[0.98] text-lg">
-            Save Transaction
-          </button>
+          <button onclick="addTransaction()" class="w-full rounded-3xl bg-indigo-600 text-white py-3.5 text-sm font-semibold shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition active:scale-95">Save transaction</button>
         </div>
-
       </div>
     </div>
 
@@ -299,14 +218,12 @@
       <div id="modalBox" class="bg-white dark:bg-gray-800 w-10/12 max-w-sm rounded-[24px] p-6 shadow-2xl transform scale-95 transition-transform duration-300">
         <h3 id="modalTitle" class="text-xl font-extrabold text-gray-800 dark:text-white mb-2">Notice</h3>
         <p id="modalMessage" class="text-gray-500 dark:text-gray-300 text-sm mb-8 leading-relaxed font-medium"></p>
-        
         <div class="flex gap-3 justify-end">
-          <button id="btnModalCancel" onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-gray-600 dark:text-gray-300 font-bold bg-gray-100 dark:bg-gray-700 active:scale-95 transition">Cancel</button>
-          <button id="btnModalConfirm" class="px-5 py-2.5 rounded-xl text-white font-bold shadow-md active:scale-95 transition">OK</button>
+          <button id="btnModalCancel" onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-gray-600 dark:text-gray-200 border border-gray-200 dark:border-gray-700 transition hover:bg-gray-100 dark:hover:bg-gray-800">Cancel</button>
+          <button id="btnModalConfirm" class="px-5 py-2.5 rounded-xl text-white font-bold shadow-md bg-indigo-600">Confirm</button>
         </div>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -314,6 +231,7 @@
     const AUTH_STORAGE_KEY = 'fintrack_user';
     let currentUser = null;
     let transactions = [];
+    let activeSuggestion = null;
 
     const normalizeUserId = (value) => {
       return value.trim().toLowerCase().replace(/[@.#$\[\]\/]/g, '_');
@@ -331,55 +249,6 @@
       return `${FIREBASE_BASE}users/${encodeURIComponent(normalizeUserId(userId))}/transactions/${encodeURIComponent(transactionId)}.json`;
     };
 
-    const fetchUserTransactions = async () => {
-      if (!currentUser) return [];
-      const response = await fetch(getUserTransactionsUrl(currentUser.id));
-      if (!response.ok) {
-        throw new Error('Unable to load transactions');
-      }
-      const data = await response.json();
-      if (!data) return [];
-      return Object.entries(data).map(([id, tx]) => ({
-        id: /^\d+$/.test(id) ? Number(id) : id,
-        ...tx
-      }));
-    };
-
-    const loadTransactions = async () => {
-      transactions = [];
-      if (!currentUser) return;
-      try {
-        transactions = await fetchUserTransactions();
-      } catch (e) {
-        console.error('Error loading transactions:', e);
-        transactions = [];
-      }
-    };
-
-    const saveTransactionToFirebase = async (transaction) => {
-      if (!currentUser) throw new Error('No authenticated user');
-      const response = await fetch(getTransactionRefUrl(currentUser.id, transaction.id), {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(transaction)
-      });
-      if (!response.ok) {
-        throw new Error('Unable to save transaction');
-      }
-      return response.json();
-    };
-
-    const deleteTransactionFromFirebase = async (transactionId) => {
-      if (!currentUser) throw new Error('No authenticated user');
-      const response = await fetch(getTransactionRefUrl(currentUser.id, transactionId), {
-        method: 'DELETE'
-      });
-      if (!response.ok) {
-        throw new Error('Unable to delete transaction');
-      }
-      return response.json();
-    };
-
     const saveSession = (user) => {
       localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
     };
@@ -388,7 +257,7 @@
       try {
         const raw = localStorage.getItem(AUTH_STORAGE_KEY);
         return raw ? JSON.parse(raw) : null;
-      } catch(e) {
+      } catch (e) {
         return null;
       }
     };
@@ -403,296 +272,199 @@
       expense: ["Food", "Transport", "Bills", "Groceries", "Shopping", "Health"],
       income: ["Salary", "Freelance", "Business", "Gift", "Refund", "Other"]
     };
-    let activeSuggestion = null;
 
-    const showAuthError = (message) => {
-      const errorNode = document.getElementById('authError');
-      if (!message) {
-        errorNode.classList.add('hidden');
-        errorNode.textContent = '';
-        return;
+    const redirectToLogin = () => {
+      clearSession();
+      history.replaceState({ page: 'login' }, '', 'login.html');
+      window.location.replace('login.html');
+    };
+
+    const ensureAuthenticated = () => {
+      if (!currentUser || !currentUser.id) {
+        redirectToLogin();
+        return false;
       }
-      errorNode.textContent = message;
-      errorNode.classList.remove('hidden');
+      return true;
     };
 
-    const setAuthButtonState = (button, loading, label) => {
-      if (!button) return;
-      button.disabled = loading;
-      button.textContent = loading ? 'Working...' : label;
-      button.classList.toggle('opacity-60', loading);
-    };
-
-    const switchAuthTab = (tab) => {
-      const loginForm = document.getElementById('loginForm');
-      const registerForm = document.getElementById('registerForm');
-      const loginTab = document.getElementById('authTabLogin');
-      const registerTab = document.getElementById('authTabRegister');
-
-      showAuthError('');
-
-      if (tab === 'register') {
-        loginForm.classList.add('hidden');
-        registerForm.classList.remove('hidden');
-        loginTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200';
-        registerTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm';
-        resetPasswordToggle('loginPassword', 'loginPasswordToggle');
-      } else {
-        registerForm.classList.add('hidden');
-        loginForm.classList.remove('hidden');
-        registerTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200';
-        loginTab.className = 'flex-1 rounded-full px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm';
-        resetPasswordToggle('registerPassword', 'registerPasswordToggle');
-      }
-    };
-
-    const getPasswordToggleIcon = (isVisible) => {
-      if (isVisible) {
-        return `
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 011.46-3.04M6.68 6.68A9.965 9.965 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.05 10.05 0 01-1.02 2.24M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
-          </svg>`;
-      }
-      return `
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>`;
-    };
-
-    const togglePasswordVisibility = (fieldId, buttonId) => {
-      const input = document.getElementById(fieldId);
-      const button = document.getElementById(buttonId);
-      if (!input || !button) return;
-      const isVisible = input.type === 'password';
-      input.type = isVisible ? 'text' : 'password';
-      button.innerHTML = getPasswordToggleIcon(isVisible);
-      button.setAttribute('aria-label', isVisible ? 'Hide password' : 'Show password');
-      button.title = isVisible ? 'Hide password' : 'Show password';
-    };
-
-    const resetPasswordToggle = (fieldId, buttonId) => {
-      const input = document.getElementById(fieldId);
-      const button = document.getElementById(buttonId);
-      if (!input || !button) return;
-      input.type = 'password';
-      button.innerHTML = getPasswordToggleIcon(false);
-      button.setAttribute('aria-label', 'Show password');
-      button.title = 'Show password';
-    };
-
-    const updateWelcomeMessage = () => {
-      const welcomeNode = document.getElementById('welcomeMessage');
-      const welcomeInitial = document.getElementById('welcomeNameInitial');
-      const welcomeFull = document.getElementById('welcomeNameFull');
-      if (!currentUser || !welcomeNode || !welcomeInitial || !welcomeFull) return;
-      const name = currentUser.name.trim();
-      const firstWord = name.split(' ')[0] || '';
-      welcomeInitial.textContent = firstWord;
-      welcomeFull.textContent = name;
-      welcomeNode.classList.remove('hidden');
-    };
-
-    const showAuthPage = () => {
-      const authPage = document.getElementById('authPage');
-      const dashboard = document.getElementById('dashboard');
-      authPage.classList.replace('page-hidden', 'page-active');
-      dashboard.classList.replace('page-active', 'page-hidden');
-    };
-
-    const showDashboard = () => {
-      const authPage = document.getElementById('authPage');
-      const dashboard = document.getElementById('dashboard');
-      authPage.classList.replace('page-active', 'page-hidden');
-      dashboard.classList.replace('page-hidden', 'page-active');
-    };
-
-    const fetchUserData = async (userId) => {
-      const url = getUserRefUrl(userId);
-      const response = await fetch(url);
+    const fetchUserTransactions = async () => {
+      if (!currentUser) return [];
+      const response = await fetch(getUserTransactionsUrl(currentUser.id));
       if (!response.ok) {
-        throw new Error('Unable to reach the database');
+        throw new Error('Unable to load transactions');
+      }
+      const data = await response.json();
+      if (!data) return [];
+      return Object.entries(data).map(([id, tx]) => ({
+        id: /^\d+$/.test(id) ? Number(id) : id,
+        ...tx
+      }));
+    };
+
+    const saveTransactionToFirebase = async (transaction) => {
+      if (!ensureAuthenticated()) throw new Error('No authenticated user');
+      const response = await fetch(getTransactionRefUrl(currentUser.id, transaction.id), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(transaction)
+      });
+      if (!response.ok) {
+        throw new Error('Unable to save transaction');
       }
       return response.json();
     };
 
-    const setCurrentUser = (user) => {
-      currentUser = {
-        id: user.id,
-        key: normalizeUserId(user.id),
-        name: user.name || user.id
-      };
-      saveSession(currentUser);
-      updateWelcomeMessage();
+    const deleteTransactionFromFirebase = async (transactionId) => {
+      if (!ensureAuthenticated()) throw new Error('No authenticated user');
+      const response = await fetch(getTransactionRefUrl(currentUser.id, transactionId), {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Unable to delete transaction');
+      }
+      return response.json();
     };
 
-    const handleRegister = async (event) => {
-      event.preventDefault();
-      showAuthError('');
+    const updateWelcomeMessage = () => {
+      const welcomeInitial = document.getElementById('welcomeNameInitial');
+      const welcomeFull = document.getElementById('welcomeNameFull');
+      if (!currentUser || !welcomeInitial || !welcomeFull) return;
+      const name = currentUser.name.trim();
+      const firstWord = name.split(' ')[0] || '';
+      welcomeInitial.textContent = firstWord;
+      welcomeFull.textContent = name;
+    };
 
-      const name = document.getElementById('registerName').value.trim();
-      const userId = document.getElementById('registerUserId').value.trim();
-      const password = document.getElementById('registerPassword').value.trim();
-      const form = event.target.closest('form');
-      const button = form ? form.querySelector('button[type="submit"]') : null;
+    const showDashboard = () => {
+      const dashboard = document.getElementById('dashboard');
+      const addPage = document.getElementById('addPage');
+      dashboard.classList.replace('page-hidden', 'page-active');
+      addPage.classList.replace('page-active', 'page-hidden');
+      history.replaceState({ page: 'dashboard' }, '', 'index.html');
+    };
 
-      if (!name || !userId || !password) {
-        showAuthError('Please complete all fields.');
-        return;
-      }
-      if (password.length < 6) {
-        showAuthError('Password must be at least 6 characters long.');
-        return;
-      }
+    const showAddPage = () => {
+      const dashboard = document.getElementById('dashboard');
+      const addPage = document.getElementById('addPage');
+      dashboard.classList.replace('page-active', 'page-hidden');
+      addPage.classList.replace('page-hidden', 'page-active');
+    };
 
-      setAuthButtonState(button, true, 'Create account');
-      try {
-        const existing = await fetchUserData(userId);
-        if (existing) {
-          showAuthError('An account already exists with this email or mobile.');
-          return;
-        }
-
-        const payload = {
-          id: userId,
-          name,
-          password
-        };
-        const response = await fetch(getUserRefUrl(userId), {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-          throw new Error('Unable to create account');
-        }
-
-        setCurrentUser(payload);
-        await loadTransactions();
-        renderApp();
+    const togglePage = (pageId) => {
+      if (pageId === 'dashboard') {
         showDashboard();
-      } catch (error) {
-        const message = error.message.includes('Unable to reach') ? 'Unable to reach the authentication server. Please try again later.' : error.message;
-        showAuthError(message || 'Unable to create account.');
-      } finally {
-        setAuthButtonState(button, false, 'Create account');
+      } else if (pageId === 'addPage') {
+        showAddPage();
+        history.pushState({ page: 'add' }, '', '#add');
       }
     };
 
-    const handleLogin = async (event) => {
-      event.preventDefault();
-      showAuthError('');
-
-      const userId = document.getElementById('loginUserId').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      const form = event.target.closest('form');
-      const button = form ? form.querySelector('button[type="submit"]') : null;
-
-      if (!userId || !password) {
-        showAuthError('Please enter both email/mobile and password.');
-        return;
-      }
-
-      setAuthButtonState(button, true, 'Sign in');
-      try {
-        const user = await fetchUserData(userId);
-        if (!user) {
-          showAuthError('No account was found for that email or mobile.');
-          return;
-        }
-        if (user.password !== password) {
-          showAuthError('The password is incorrect. Please try again.');
-          return;
-        }
-
-        setCurrentUser(user);
-        await loadTransactions();
-        renderApp();
-        showDashboard();
-      } catch (error) {
-        const message = error.message.includes('Unable to reach') ? 'Unable to reach the authentication server. Please try again later.' : 'Unable to sign in. Please check your input.';
-        showAuthError(message);
-      } finally {
-        setAuthButtonState(button, false, 'Sign in');
-      }
-    };
-
-    // --- Custom Modal Logic ---
-    let modalConfirmAction = null;
-
-    function showModal(title, message, isConfirm, btnColorClass, btnText, callback) {
+    const showModal = (title, message, isConfirm, btnColorClass, btnText, callback) => {
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalMessage').innerText = message;
-
       const btnCancel = document.getElementById('btnModalCancel');
       const btnConfirm = document.getElementById('btnModalConfirm');
-
       btnConfirm.className = `px-5 py-2.5 rounded-xl text-white font-bold shadow-md active:scale-95 transition ${btnColorClass}`;
       btnConfirm.innerText = btnText;
       btnCancel.style.display = isConfirm ? 'block' : 'none';
-
-      modalConfirmAction = callback;
-
+      window.modalConfirmAction = callback;
       const modal = document.getElementById('customModal');
       const modalBox = document.getElementById('modalBox');
       modal.classList.remove('opacity-0', 'pointer-events-none');
       modalBox.classList.remove('scale-95');
       modalBox.classList.add('scale-100');
-    }
+    };
 
-    function closeModal() {
+    const closeModal = () => {
       const modal = document.getElementById('customModal');
       const modalBox = document.getElementById('modalBox');
       modal.classList.add('opacity-0', 'pointer-events-none');
       modalBox.classList.remove('scale-100');
       modalBox.classList.add('scale-95');
-      modalConfirmAction = null;
-    }
-
-    document.getElementById('btnModalConfirm').onclick = function() {
-      if (modalConfirmAction) modalConfirmAction();
-      closeModal();
+      window.modalConfirmAction = null;
     };
 
-    // --- Theme Management ---
-    function updateThemeUI(isDark) {
-      document.getElementById('icon-moon').style.display = isDark ? 'none' : 'block';
-      document.getElementById('icon-sun').style.display = isDark ? 'block' : 'none';
-    }
+    const deleteTransaction = (id) => {
+      if (!ensureAuthenticated()) return;
+      showModal(
+        'Delete Record',
+        'Are you sure you want to delete this transaction?',
+        true,
+        'bg-red-500',
+        'Delete',
+        async () => {
+          try {
+            await deleteTransactionFromFirebase(id);
+            transactions = transactions.filter(tx => tx.id !== id);
+            renderApp();
+          } catch (e) {
+            showModal('Unable to delete', 'Unable to delete transaction. Please try again.', false, 'bg-indigo-600', 'OK', null);
+          }
+        }
+      );
+    };
 
-    function toggleTheme() {
-      const htmlEl = document.documentElement;
-      htmlEl.classList.toggle('dark');
-      const isDark = htmlEl.classList.contains('dark');
-      try {
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      } catch(e) {}
-      updateThemeUI(isDark);
-    }
+    const renderApp = () => {
+      const todayStr = getTodayString();
+      let totalBal = 0, totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0;
+      const activityList = document.getElementById('activityList');
+      activityList.innerHTML = '';
 
-    function initTheme() {
-      let isDark = false;
-      try {
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-      } catch(e) {}
+      const sortedTxs = [...transactions].sort((a, b) => b.id - a.id);
+      if (sortedTxs.length === 0) {
+        activityList.innerHTML = '<li class="text-center text-sm text-slate-500 dark:text-slate-400 py-8">No transactions yet.</li>';
+      }
 
-      if (isDark) document.documentElement.classList.add('dark');
-      else document.documentElement.classList.remove('dark');
-      updateThemeUI(isDark);
-    }
+      sortedTxs.forEach(tx => {
+        const isToday = tx.dateStr === todayStr;
+        if (tx.type === 'income') {
+          totalInc += tx.amount;
+          if (isToday) todayInc += tx.amount;
+        } else {
+          totalExp += tx.amount;
+          if (isToday) todayExp += tx.amount;
+        }
+        totalBal += tx.type === 'income' ? tx.amount : -tx.amount;
 
-    // --- Core Logic ---
+        const isIncome = tx.type === 'income';
+        const iconColor = isIncome ? 'text-green-500 bg-green-100 dark:bg-green-900/30' : 'text-red-500 bg-red-100 dark:bg-red-900/30';
+        const iconSvg = isIncome
+          ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 1.343 3 3v7h3l-4 4-4-4h3v-7c0-1.657 1.343-3 3-3z"></path>'
+          : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16c-1.657 0-3-1.343-3-3V6H6l4-4 4 4h-3v7c0 1.657-1.343 3-3 3z"></path>';
+        const sign = isIncome ? '+' : '-';
+        const amountColor = isIncome ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-gray-100';
+        const dateDisplay = formatTransactionDate(tx.dateStr);
+
+        const li = document.createElement('li');
+        li.className = 'bg-white/95 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700/80 shadow-sm rounded-3xl p-4 flex items-center justify-between gap-4 hover:-translate-y-0.5 transition-transform';
+        li.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="${iconColor} rounded-2xl p-3"> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">${iconSvg}</svg> </div>
+            <div>
+              <p class="font-semibold text-gray-900 dark:text-white">${tx.title}</p>
+              <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400 dark:text-slate-500">${dateDisplay}</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-bold ${amountColor}">${sign}  ${tx.amount.toLocaleString('en-IN')}</p>
+            <button onclick="deleteTransaction('${tx.id}')" class="mt-2 text-xs text-red-500 hover:text-red-600">Delete</button>
+          </div>
+        `;
+        activityList.appendChild(li);
+      });
+
+      document.getElementById('totalBalance').innerText = formatCurrency(totalBal);
+      document.getElementById('todayExpense').innerText = formatCurrency(todayExp);
+      document.getElementById('totalExpense').innerText = formatCurrency(totalExp);
+      document.getElementById('todayIncome').innerText = formatCurrency(todayInc);
+      document.getElementById('totalIncome').innerText = formatCurrency(totalInc);
+    };
+
     const formatCurrency = (amount) => {
       try {
-        return new Intl.NumberFormat('en-IN', {
-          style: 'currency', currency: 'INR', maximumFractionDigits: 0
-        }).format(amount).replace('₹', '₹ ');
-      } catch(e) {
-        return '₹ ' + amount;
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount).replace('', ' ');
+      } catch (e) {
+        return ' ' + amount;
       }
     };
 
@@ -705,175 +477,65 @@
       return new Intl.DateTimeFormat('en-IN', { month: 'short', day: 'numeric' }).format(txDate);
     };
 
-    function deleteTransaction(id) {
-      showModal(
-        "Delete Record",
-        "Are you sure you want to delete this transaction?",
-        true,
-        "bg-red-500",
-        "Delete",
-        async () => {
-          try {
-            await deleteTransactionFromFirebase(id);
-            transactions = transactions.filter(tx => tx.id !== id);
-            renderApp();
-          } catch (e) {
-            showModal("Unable to delete", "Unable to delete transaction. Please try again.", false, "bg-indigo-600", "OK", null);
-          }
-        }
-      );
-    }
-
-    function renderApp() {
-      const todayStr = getTodayString();
-      let totalBal = 0, totalInc = 0, totalExp = 0, todayInc = 0, todayExp = 0;
-      const activityList = document.getElementById("activityList");
-      activityList.innerHTML = "";
-
-      if (transactions.length === 0) {
-        activityList.innerHTML = `
-          <div class="flex flex-col items-center justify-center py-10 px-4 text-center opacity-90">
-            <div class="w-20 h-20 bg-gray-200/70 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 shadow-inner">
-              <svg class="w-10 h-10 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-            </div>
-            <p class="text-gray-700 dark:text-gray-200 font-bold text-lg">Nothing tracked yet</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 max-w-[220px]">Add your first transaction to start seeing your daily spending and income in one place.</p>
-          </div>
-        `;
-      }
-
-      const sortedTxs = [...transactions].sort((a, b) => b.id - a.id);
-
-      sortedTxs.forEach(tx => {
-        const isToday = (tx.dateStr === todayStr);
-
-        if (tx.type === "income") {
-          totalInc += tx.amount;
-          totalBal += tx.amount;
-          if (isToday) todayInc += tx.amount;
-        } else {
-          totalExp += tx.amount;
-          totalBal -= tx.amount;
-          if (isToday) todayExp += tx.amount;
-        }
-
-        const isIncome = tx.type === "income";
-        const iconColor = isIncome ? "text-green-500 bg-green-100 dark:bg-green-900/30" : "text-red-500 bg-red-100 dark:bg-red-900/30";
-        const iconSvg = isIncome
-          ? `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>`
-          : `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>`;
-
-        const sign = isIncome ? "+" : "-";
-        const amountColor = isIncome ? "text-green-600 dark:text-green-400" : "text-gray-900 dark:text-gray-100";
-        const dateDisplay = formatTransactionDate(tx.dateStr);
-
-        const li = document.createElement("li");
-        li.className = "bg-white/95 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700/80 shadow-sm rounded-3xl p-4 flex items-center justify-between gap-4 hover:-translate-y-0.5 transition-transform";
-        li.innerHTML = `
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl flex items-center justify-center ${iconColor} shrink-0">
-              ${iconSvg}
-            </div>
-            <div>
-              <h4 class="font-bold text-gray-800 dark:text-gray-100 text-sm">${tx.title}</h4>
-              <p class="mt-1 text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">${dateDisplay}</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <div class="font-extrabold text-xl ${amountColor} tracking-tight">${sign}${formatCurrency(tx.amount)}</div>
-            <button onclick="deleteTransaction(${tx.id})" class="p-2 -mr-2 text-gray-400 dark:text-gray-500 border border-transparent rounded-full hover:text-red-500 hover:border-red-200 dark:hover:border-red-700/50 hover:bg-red-50 dark:hover:bg-red-900/30 active:scale-95 transition-all">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-            </button>
-          </div>
-        `;
-        activityList.appendChild(li);
-      });
-
-      document.getElementById("totalBalance").innerText = formatCurrency(totalBal);
-      document.getElementById("todayExpense").innerText = formatCurrency(todayExp);
-      document.getElementById("totalExpense").innerText = formatCurrency(totalExp);
-      document.getElementById("todayIncome").innerText = formatCurrency(todayInc);
-      document.getElementById("totalIncome").innerText = formatCurrency(totalInc);
-    }
-
-    // --- Page Navigation ---
-    function togglePage(pageId) {
-      const dashboard = document.getElementById("dashboard");
-      const addPage = document.getElementById("addPage");
-
-      if (pageId === "dashboard") {
-        dashboard.classList.replace("page-hidden", "page-active");
-        addPage.classList.replace("page-active", "page-hidden");
-      } else {
-        dashboard.classList.replace("page-active", "page-hidden");
-        addPage.classList.replace("page-hidden", "page-active");
-      }
-    }
-
-    function renderSuggestions(type) {
-      const container = document.getElementById("suggestionsContainer");
-      if(!container) return;
-      container.innerHTML = "";
+    const renderSuggestions = (type) => {
+      const container = document.getElementById('suggestionsContainer');
+      if (!container) return;
+      container.innerHTML = '';
       activeSuggestion = suggestions[type].includes(activeSuggestion) ? activeSuggestion : null;
-
       (suggestions[type] || []).forEach(tag => {
         const isSelected = activeSuggestion === tag;
-        const btn = document.createElement("button");
+        const btn = document.createElement('button');
+        btn.type = 'button';
         btn.className = `px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${isSelected ? 'bg-indigo-600 text-white shadow-sm' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`;
         btn.innerText = tag;
         btn.onclick = () => {
-          document.getElementById("title").value = tag;
           activeSuggestion = tag;
+          document.getElementById('title').value = tag;
           renderSuggestions(type);
         };
         container.appendChild(btn);
       });
-    }
+    };
 
-    function setTransactionType(type) {
-      document.getElementById("txType").value = type;
+    const setTransactionType = (type) => {
+      document.getElementById('txType').value = type;
       renderSuggestions(type);
-      
-      const btnIncome = document.getElementById("btnIncome");
-      const btnExpense = document.getElementById("btnExpense");
-
-      const expenseActive = "flex-1 py-3.5 text-sm font-semibold rounded-xl bg-red-600 text-white shadow-sm shadow-red-600/20 transition-all";
-      const incomeActive = "flex-1 py-3.5 text-sm font-semibold rounded-xl bg-emerald-600 text-white shadow-sm shadow-emerald-600/20 transition-all";
-      const inactiveStyle = "flex-1 py-3.5 text-sm font-semibold rounded-xl text-gray-500 dark:text-gray-400 bg-transparent transition-all";
-
-      if (type === "expense") {
+      const btnIncome = document.getElementById('btnIncome');
+      const btnExpense = document.getElementById('btnExpense');
+      const expenseActive = 'flex-1 py-3.5 text-sm font-semibold rounded-xl bg-red-600 text-white shadow-sm shadow-red-600/20 transition-all';
+      const incomeActive = 'flex-1 py-3.5 text-sm font-semibold rounded-xl bg-emerald-600 text-white shadow-sm shadow-emerald-600/20 transition-all';
+      const inactiveStyle = 'flex-1 py-3.5 text-sm font-semibold rounded-xl text-gray-500 dark:text-gray-400 bg-transparent transition-all';
+      if (type === 'expense') {
         btnExpense.className = expenseActive;
         btnIncome.className = inactiveStyle;
       } else {
         btnIncome.className = incomeActive;
         btnExpense.className = inactiveStyle;
       }
-    }
+    };
 
-    function openAddPage(type) {
+    const openAddPage = (type) => {
+      if (!ensureAuthenticated()) return;
       activeSuggestion = null;
       setTransactionType(type);
-      document.getElementById("amount").value = "";
-      document.getElementById("title").value = "";
+      document.getElementById('amount').value = '';
+      document.getElementById('title').value = '';
       togglePage('addPage');
-      setTimeout(() => { document.getElementById("amount").focus(); }, 350);
-    }
+      setTimeout(() => { document.getElementById('amount').focus(); }, 350);
+    };
 
-    async function addTransaction() {
-      let title = document.getElementById("title").value.trim();
-      const amount = parseFloat(document.getElementById("amount").value);
-      const type = document.getElementById("txType").value;
-
+    const addTransaction = async () => {
+      if (!ensureAuthenticated()) return;
+      let title = document.getElementById('title').value.trim();
+      const amount = parseFloat(document.getElementById('amount').value);
+      const type = document.getElementById('txType').value;
       if (isNaN(amount) || amount <= 0) {
-        showModal("Invalid Amount", "Please enter an amount greater than 0.", false, "bg-indigo-600", "Got it", null);
+        showModal('Invalid Amount', 'Please enter an amount greater than 0.', false, 'bg-indigo-600', 'Got it', null);
         return;
       }
-
       if (!title) {
-        title = (type === 'expense') ? 'Expense' : 'Income';
+        title = type === 'expense' ? 'Expense' : 'Income';
       }
-
-      activeSuggestion = null;
       const transaction = {
         id: Date.now(),
         title,
@@ -881,30 +543,85 @@
         type,
         dateStr: getTodayString()
       };
-
       try {
         await saveTransactionToFirebase(transaction);
         transactions.push(transaction);
         renderApp();
-        togglePage("dashboard");
+        togglePage('dashboard');
       } catch (e) {
-        showModal("Unable to save", "Unable to save transaction. Please try again.", false, "bg-indigo-600", "OK", null);
+        showModal('Unable to save', 'Unable to save transaction. Please try again.', false, 'bg-indigo-600', 'OK', null);
       }
-    }
+    };
+
+    const updateThemeUI = (isDark) => {
+      document.getElementById('icon-moon').style.display = isDark ? 'none' : 'block';
+      document.getElementById('icon-sun').style.display = isDark ? 'block' : 'none';
+    };
+
+    const toggleTheme = () => {
+      const htmlEl = document.documentElement;
+      htmlEl.classList.toggle('dark');
+      const isDark = htmlEl.classList.contains('dark');
+      try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+      updateThemeUI(isDark);
+    };
+
+    const initTheme = () => {
+      let isDark = false;
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+      } catch (e) {}
+      document.documentElement.classList.toggle('dark', isDark);
+      updateThemeUI(isDark);
+    };
+
+    const loadTransactions = async () => {
+      transactions = [];
+      if (!currentUser) return;
+      try {
+        transactions = await fetchUserTransactions();
+      } catch (e) {
+        console.error('Error loading transactions:', e);
+        transactions = [];
+      }
+    };
+
+    const logout = () => {
+      redirectToLogin();
+    };
 
     const initApp = async () => {
       initTheme();
       const session = getSession();
-      if (session && session.id) {
-        currentUser = session;
-        updateWelcomeMessage();
-        await loadTransactions();
-        renderApp();
-        showDashboard();
-      } else {
-        showAuthPage();
-        switchAuthTab('login');
+      if (!session || !session.id) {
+        redirectToLogin();
+        return;
       }
+      currentUser = session;
+      updateWelcomeMessage();
+      await loadTransactions();
+      renderApp();
+      showDashboard();
+      history.replaceState({ page: 'dashboard' }, '', 'index.html');
+    };
+
+    window.addEventListener('popstate', (event) => {
+      if (!currentUser || !currentUser.id) {
+        redirectToLogin();
+        return;
+      }
+      if (event.state && event.state.page === 'add') {
+        showAddPage();
+      } else {
+        showDashboard();
+      }
+    });
+
+    document.getElementById('btnModalConfirm').onclick = function () {
+      if (window.modalConfirmAction) window.modalConfirmAction();
+      closeModal();
     };
 
     initApp();
