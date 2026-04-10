@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: http://ft.indiacybercafe.com/sitemap.xml
