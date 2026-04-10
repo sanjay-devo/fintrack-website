@@ -12,6 +12,7 @@ A clean and polished finance tracker built with HTML, Tailwind CSS, and vanilla 
 - Delete entries with confirmation modal
 - Dark/light theme toggle
 - Responsive layout for mobile and desktop
+- Compact mobile header greeting with full name shown on desktop
 - Polished UI with smooth transitions and modern controls
 
 ## How to Use
@@ -37,3 +38,4 @@ A clean and polished finance tracker built with HTML, Tailwind CSS, and vanilla 
 - Each user has their own `users/{userId}/transactions` node.
 - Session state is stored locally so signed-in users remain logged in.
 - Theme preference is also saved locally to preserve light/dark mode.
+- The dashboard header is optimized for mobile with a compact greeting and a clean desktop header.

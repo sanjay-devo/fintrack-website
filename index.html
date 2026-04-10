@@ -87,6 +87,16 @@
       display: block;
     }
 
+    .dashboard-header {
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(226,232,240,0.65);
+    }
+    .dark .dashboard-header {
+      background: rgba(15,23,42,0.82);
+      border-color: rgba(71,85,105,0.55);
+    }
+
     /* Page Transitions */
     .page-transition {
       transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -179,52 +189,52 @@
     </div>
   </div>
 
-  <div class="w-full max-w-md bg-gray-50 dark:bg-gray-900 h-[100dvh] sm:h-auto sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl sm:border-[8px] border-gray-800 dark:border-gray-800 overflow-hidden relative flex flex-col mx-auto">
+  <div class="w-full lg:max-w-[1200px] bg-gray-50 dark:bg-gray-900 min-h-[100dvh] sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl overflow-hidden relative flex flex-col mx-auto px-4 sm:px-6 lg:px-8">
 
-    <div id="dashboard" class="page-transition page-hidden flex flex-col p-6 h-full overflow-hidden relative">
+    <div id="dashboard" class="page-transition page-hidden flex flex-col p-4 sm:p-6 lg:p-10 h-full overflow-hidden relative">
       
-      <header class="flex justify-between items-center mb-6 pt-2 shrink-0 z-20">
-        <div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider mb-1">Overview</p>
-          <h2 class="font-bold text-2xl text-gray-800 dark:text-white leading-none">My Finances</h2>
-          <p id="welcomeMessage" class="text-sm text-gray-500 dark:text-gray-400 mt-1 hidden"></p>
+      <header class="dashboard-header flex items-center justify-between gap-3 sm:flex-row mb-6 sm:mb-8 p-4 sm:p-5 lg:p-6 rounded-[28px] shadow-sm z-20">
+        <div class="flex-1 min-w-0">
+          <p id="welcomeMessage" class="font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 dark:text-white leading-tight whitespace-nowrap">
+            Hello,&nbsp;<span id="welcomeNameInitial" class="sm:hidden"></span><span id="welcomeNameFull" class="hidden sm:inline"></span>
+          </p>
         </div>
         
-        <button onclick="toggleTheme()" class="w-11 h-11 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700">
+        <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700">
           <svg id="icon-moon" class="w-5 h-5 transition-opacity duration-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
           <svg id="icon-sun" class="w-6 h-6 hidden transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
         </button>
       </header>
 
-      <div class="shrink-0 bg-gradient-to-br from-indigo-600 to-indigo-800 dark:from-indigo-900 dark:to-gray-800 rounded-[24px] p-6 text-white shadow-xl dark:shadow-none mb-6 relative overflow-hidden z-20">
-        <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="shrink-0 bg-gradient-to-br from-indigo-600 to-indigo-800 dark:from-indigo-900 dark:to-gray-800 rounded-[24px] p-4 sm:p-6 text-white shadow-xl dark:shadow-none mb-6 relative overflow-hidden z-20">
+        <div class="absolute -right-6 -top-6 w-28 h-28 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
 
-        <p class="text-indigo-100 text-sm font-medium mb-1 relative z-10 opacity-90">Total Balance</p>
-        <h1 class="text-4xl font-extrabold tracking-tight relative z-10 mb-6" id="totalBalance">₹ 0</h1>
+        <p class="text-indigo-100 text-xs sm:text-sm font-medium mb-1 relative z-10 opacity-90">Total Balance</p>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight relative z-10 mb-5" id="totalBalance">₹ 0</h1>
         
-        <div class="grid grid-cols-2 gap-4 pt-5 border-t border-white/20 relative z-10">
-          <div class="rounded-[24px] bg-white/10 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 sm:pt-5 border-t border-white/20 relative z-10">
+          <div class="rounded-[24px] bg-white/10 p-4 sm:p-5">
             <p class="text-[10px] uppercase tracking-widest text-red-100/90">Today expense</p>
-            <p class="mt-3 text-3xl font-extrabold text-red-100 leading-none" id="todayExpense">₹ 0</p>
+            <p class="mt-3 text-2xl sm:text-3xl font-extrabold text-red-100 leading-none" id="todayExpense">₹ 0</p>
             <p class="mt-3 text-[11px] text-indigo-100/70">Total: <span id="totalExpense" class="font-semibold text-indigo-100">₹ 0</span></p>
           </div>
-          <div class="rounded-[24px] bg-white/10 p-4">
+          <div class="rounded-[24px] bg-white/10 p-4 sm:p-5">
             <p class="text-[10px] uppercase tracking-widest text-green-100/90">Today income</p>
-            <p class="mt-3 text-3xl font-extrabold text-green-100 leading-none" id="todayIncome">₹ 0</p>
+            <p class="mt-3 text-2xl sm:text-3xl font-extrabold text-green-100 leading-none" id="todayIncome">₹ 0</p>
             <p class="mt-3 text-[11px] text-indigo-100/70">Total: <span id="totalIncome" class="font-semibold text-indigo-100">₹ 0</span></p>
           </div>
         </div>
       </div>
 
-      <div class="flex gap-4 mb-6 shrink-0 z-20">
-        <button onclick="openAddPage('expense')" class="flex-1 bg-indigo-600 text-white shadow-lg border border-transparent py-3.5 rounded-2xl font-semibold flex justify-center items-center gap-2 hover:bg-indigo-700 active:scale-95 transition-all duration-200">
+      <div class="flex flex-col gap-3 mb-6 shrink-0 z-20 sm:flex-row">
+        <button onclick="openAddPage('expense')" class="w-full flex-1 bg-indigo-600 text-white shadow-lg border border-transparent py-3.5 rounded-2xl font-semibold flex justify-center items-center gap-2 hover:bg-indigo-700 active:scale-95 transition-all duration-200">
           <div class="bg-white/15 text-white p-1.5 rounded-full">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"></path></svg>
           </div>
           Expense
         </button>
 
-        <button onclick="openAddPage('income')" class="flex-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 py-3.5 rounded-2xl font-semibold flex justify-center items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95">
+        <button onclick="openAddPage('income')" class="w-full flex-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 py-3.5 rounded-2xl font-semibold flex justify-center items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95">
           <div class="bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 p-1.5 rounded-full">
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
           </div>
@@ -249,7 +259,7 @@
 
     <div id="addPage" class="page-transition page-hidden h-full flex flex-col bg-gray-50 dark:bg-gray-900 absolute top-0 left-0 w-full z-[80]">
       
-      <header class="p-6 flex items-center border-b border-gray-200/60 dark:border-gray-800 pt-8 sm:pt-6 shrink-0 bg-white dark:bg-gray-900 z-10 shadow-sm">
+      <header class="p-4 sm:p-6 flex items-center border-b border-gray-200/60 dark:border-gray-800 pt-6 sm:pt-6 shrink-0 bg-white dark:bg-gray-900 z-10 shadow-sm">
         <button onclick="togglePage('dashboard')" class="p-2 -ml-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 transition active:scale-90">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         </button>
@@ -474,8 +484,13 @@
 
     const updateWelcomeMessage = () => {
       const welcomeNode = document.getElementById('welcomeMessage');
-      if (!currentUser || !welcomeNode) return;
-      welcomeNode.textContent = `Hello, ${currentUser.name}`;
+      const welcomeInitial = document.getElementById('welcomeNameInitial');
+      const welcomeFull = document.getElementById('welcomeNameFull');
+      if (!currentUser || !welcomeNode || !welcomeInitial || !welcomeFull) return;
+      const name = currentUser.name.trim();
+      const firstWord = name.split(' ')[0] || '';
+      welcomeInitial.textContent = firstWord;
+      welcomeFull.textContent = name;
       welcomeNode.classList.remove('hidden');
     };
 
@@ -776,9 +791,9 @@
 
       document.getElementById("totalBalance").innerText = formatCurrency(totalBal);
       document.getElementById("todayExpense").innerText = formatCurrency(todayExp);
-      document.getElementById("totalExpense").innerText = `Total: ${formatCurrency(totalExp)}`;
+      document.getElementById("totalExpense").innerText = formatCurrency(totalExp);
       document.getElementById("todayIncome").innerText = formatCurrency(todayInc);
-      document.getElementById("totalIncome").innerText = `Total: ${formatCurrency(totalInc)}`;
+      document.getElementById("totalIncome").innerText = formatCurrency(totalInc);
     }
 
     // --- Page Navigation ---
