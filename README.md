@@ -34,6 +34,36 @@ A clean and polished finance tracker built with HTML, Tailwind CSS, and vanilla 
 - Vanilla JavaScript
 - Firebase Realtime Database (REST API)
 
+## Favicon Setup
+
+The FinTrack app uses a favicon link added to the `<head>` section of every HTML file (`index.html`, `login.html`, and `register.html`). The favicon is loaded from a shared JPEG icon URL and works across desktop and mobile browsers.
+
+```html
+<link rel="icon" type="image/jpeg" href="https://indiacybercafe.com/wp-content/uploads/2026/04/Fintech_logo_design.jpeg">
+```
+
+## Sitemap
+
+A `sitemap.xml` file is included for search engines and crawlers. It lists the main app pages and their relative crawl priority.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://yourdomain.com/index.html</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/login.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/register.html</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
+```
+
 ## Notes
 
 - User authentication data and transactions are stored in Firebase.
