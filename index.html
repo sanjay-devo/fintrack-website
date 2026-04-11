@@ -23,7 +23,7 @@
     "name": "FinTrack",
     "description": "Track your daily expenses, income, and manage money easily with FinTrack.",
     "applicationCategory": "FinanceApplication",
-    "url": "https://ft.indiacybercafe.com/index.html"
+    "url": "https://sanjay.indiacybercafe.com/index.html"
   }
   </script>
 
@@ -43,11 +43,11 @@
     body {
       -webkit-tap-highlight-color: transparent;
       overscroll-behavior-y: none;
-      background-color: #f3f4f6;
+      background-color: #f8fafc;
       color-scheme: light dark;
     }
     .dark body {
-      background-color: #030712;
+      background-color: #070a14;
     }
 
     * {
@@ -66,13 +66,14 @@
     }
 
     .soft-card {
-      background-color: rgba(255,255,255,0.88);
-      border: 1px solid rgba(229,231,235,0.85);
-      backdrop-filter: blur(10px);
+      background-color: rgba(255,255,255,0.96);
+      border: 1px solid rgba(229,231,235,0.75);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 45px rgba(15,23,42,0.06);
     }
     .dark .soft-card {
-      background-color: rgba(15,23,42,0.92);
-      border-color: rgba(51,65,85,0.92);
+      background-color: rgba(15,23,42,0.95);
+      border-color: rgba(71,85,105,0.8);
     }
 
     .password-input-wrapper {
@@ -102,13 +103,13 @@
     }
 
     .dashboard-header {
-      background: rgba(255,255,255,0.78);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(226,232,240,0.65);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(226,232,240,0.85);
     }
     .dark .dashboard-header {
-      background: rgba(15,23,42,0.82);
-      border-color: rgba(71,85,105,0.55);
+      background: rgba(15,23,42,0.92);
+      border-color: rgba(71,85,105,0.7);
     }
 
     .page-transition {
@@ -139,13 +140,22 @@
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="w-full lg:max-w-[1200px] bg-gray-50 dark:bg-gray-900 min-h-[100dvh] sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl overflow-hidden relative flex flex-col mx-auto px-4 sm:px-6 lg:px-8">
     <div id="dashboard" class="page-transition page-hidden flex flex-col p-4 sm:p-6 lg:p-10 h-full overflow-hidden relative">
-      <header class="dashboard-header flex items-center justify-between gap-3 sm:flex-row mb-6 sm:mb-8 p-4 sm:p-5 lg:p-6 rounded-[28px] shadow-sm z-20">
-        <div class="flex-1 min-w-0">
-          <p id="welcomeMessage" class="font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 dark:text-white leading-tight whitespace-nowrap">
-            Hello,&nbsp;<span id="welcomeNameInitial" class="sm:hidden"></span><span id="welcomeNameFull" class="hidden sm:inline"></span>
-          </p>
+      <header class="dashboard-header flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-5 sm:mb-8 p-4 sm:p-5 lg:p-6 rounded-[28px] shadow-sm z-20">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="h-12 w-12 rounded-full bg-indigo-600/10 text-indigo-700 dark:bg-indigo-400/15 dark:text-indigo-200 flex items-center justify-center font-semibold text-lg">
+            <span id="userAvatarLetter">F</span>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm text-slate-500 dark:text-slate-400">Welcome back</p>
+            <p id="welcomeMessage" class="font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 dark:text-white leading-tight overflow-hidden whitespace-nowrap">
+              <span id="welcomeNameInitial" class="sm:hidden"></span><span id="welcomeNameFull" class="hidden sm:inline"></span>
+            </p>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 flex-wrap justify-end">
+          <button onclick="window.location.href='settings.html'" class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700" aria-label="Settings">
+            <span class="text-lg">⚙️</span>
+          </button>
           <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 active:scale-90 border border-gray-200 dark:border-gray-700">
             <svg id="icon-moon" class="w-5 h-5 transition-opacity duration-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
             <svg id="icon-sun" class="w-6 h-6 hidden transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -243,10 +253,43 @@
       </div>
     </div>
   </div>
+  <footer class="mt-8 border-t border-slate-200/70 bg-slate-50 dark:bg-slate-900 py-6 dark:border-slate-700/60 sticky bottom-0 z-10 sm:static">
+    <div class="max-w-7xl mx-auto flex flex-col gap-6 px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm font-semibold text-slate-900 dark:text-white">FinTrack</p>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Designed with ❤️ by Sanjay Vaishya</p>
+        </div>
+        <div class="flex flex-wrap gap-3 text-sm text-slate-600 dark:text-slate-400">
+          <a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">About</a>
+          <a href="privacy.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Privacy</a>
+          <a href="cookies.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Cookies</a>
+          <a href="terms.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Terms</a>
+          <a href="mailto:sanjayvaishya.dev@gmail.com" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Contact</a>
+        </div>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-3 text-sm text-slate-500 dark:text-slate-400">
+        <span>Email: sanjayvaishya.dev@gmail.com</span>
+        <span>Mobile: +91 9203251821</span>
+        <span>App version: v1.0.0</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookieBanner" class="fixed bottom-5 left-4 right-4 max-w-4xl mx-auto rounded-3xl border border-slate-200/80 bg-white/95 shadow-2xl p-5 backdrop-blur-md dark:border-slate-700/80 dark:bg-slate-950/95 hidden">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm text-slate-600 dark:text-slate-300">We use cookies to improve your experience.</p>
+      <div class="flex flex-wrap gap-3 justify-end">
+        <button id="declineCookies" class="rounded-full border border-slate-300 px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800">Decline</button>
+        <button id="acceptCookies" class="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">Accept All</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const FIREBASE_BASE = 'https://fintrack-website-default-rtdb.firebaseio.com/';
     const AUTH_STORAGE_KEY = 'fintrack_user';
+    const COOKIE_CONSENT_KEY = 'cookie_consent';
     let currentUser = null;
     let transactions = [];
     let activeSuggestion = null;
@@ -282,6 +325,24 @@
 
     const clearSession = () => {
       localStorage.removeItem(AUTH_STORAGE_KEY);
+    };
+
+    const initCookieConsent = () => {
+      try {
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        const banner = document.getElementById('cookieBanner');
+        if (!consent && banner) banner.classList.remove('hidden');
+      } catch (e) {
+        console.warn('Cookie consent init failed', e);
+      }
+    };
+
+    const setCookieConsent = (value) => {
+      try {
+        localStorage.setItem(COOKIE_CONSENT_KEY, value);
+      } catch (e) {}
+      const banner = document.getElementById('cookieBanner');
+      if (banner) banner.classList.add('hidden');
     };
 
     const getTodayString = () => new Date().toISOString().split('T')[0];
@@ -346,11 +407,13 @@
     const updateWelcomeMessage = () => {
       const welcomeInitial = document.getElementById('welcomeNameInitial');
       const welcomeFull = document.getElementById('welcomeNameFull');
-      if (!currentUser || !welcomeInitial || !welcomeFull) return;
+      const avatarLetter = document.getElementById('userAvatarLetter');
+      if (!currentUser || !welcomeInitial || !welcomeFull || !avatarLetter) return;
       const name = currentUser.name.trim();
       const firstWord = name.split(' ')[0] || '';
       welcomeInitial.textContent = firstWord;
       welcomeFull.textContent = name;
+      avatarLetter.textContent = firstWord.charAt(0).toUpperCase() || 'F';
     };
 
     const showHomePage = () => {
@@ -475,18 +538,18 @@
         const dateDisplay = formatTransactionDate(tx.dateStr);
 
         const li = document.createElement('li');
-        li.className = 'bg-white/95 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700/80 shadow-sm rounded-3xl p-4 flex items-center justify-between gap-4 hover:-translate-y-0.5 transition-transform';
+        li.className = 'bg-white/95 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700/80 border-l-4 border-indigo-500/20 shadow-sm rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:-translate-y-0.5 transition-transform';
         li.innerHTML = `
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 min-w-0">
             <div class="${iconColor} rounded-2xl p-3"> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">${iconSvg}</svg> </div>
-            <div>
-              <p class="font-semibold text-gray-900 dark:text-white">${tx.title}</p>
+            <div class="min-w-0">
+              <p class="font-semibold text-gray-900 dark:text-white truncate">${tx.title}</p>
               <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400 dark:text-slate-500">${dateDisplay}</p>
             </div>
           </div>
-          <div class="text-right">
+          <div class="text-right sm:text-right">
             <p class="font-bold ${amountColor}">${sign}  ${tx.amount.toLocaleString('en-IN')}</p>
-            <button onclick="deleteTransaction('${tx.id}')" class="mt-2 text-xs text-red-500 hover:text-red-600">Delete</button>
+            <button onclick="deleteTransaction('${tx.id}')" class="mt-2 text-xs text-red-500 hover:text-red-600 transition-colors">Delete</button>
           </div>
         `;
         activityList.appendChild(li);
@@ -629,11 +692,12 @@
 
     const logout = () => {
       clearSession();
-      showHomePage();
+      window.location.replace('home.html');
     };
 
     const initApp = async () => {
       initTheme();
+      initCookieConsent();
       const session = getSession();
       if (!session || !session.id) {
         redirectToLogin();
@@ -665,6 +729,13 @@
       if (window.modalConfirmAction) window.modalConfirmAction();
       closeModal();
     };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const acceptBtn = document.getElementById('acceptCookies');
+      const declineBtn = document.getElementById('declineCookies');
+      if (acceptBtn) acceptBtn.addEventListener('click', () => setCookieConsent('accepted'));
+      if (declineBtn) declineBtn.addEventListener('click', () => setCookieConsent('declined'));
+    });
 
     initApp();
   </script>

@@ -50,15 +50,15 @@ A `sitemap.xml` file is included for search engines and crawlers. It lists the m
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://ft.indiacybercafe.com/index.html</loc>
+    <loc>https://sanjay.indiacybercafe.com/index.html</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://ft.indiacybercafe.com/login.html</loc>
+    <loc>https://sanjay.indiacybercafe.com/login.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://ft.indiacybercafe.com/register.html</loc>
+    <loc>https://sanjay.indiacybercafe.com/register.html</loc>
     <priority>0.8</priority>
   </url>
 </urlset>

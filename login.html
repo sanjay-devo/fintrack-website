@@ -22,7 +22,7 @@
     "@type": "WebApplication",
     "name": "FinTrack",
     "applicationCategory": "FinanceApplication",
-    "url": "https://ft.indiacybercafe.com/login.html"
+    "url": "https://sanjay.indiacybercafe.com/login.html"
   }
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -90,12 +90,12 @@
   </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen sm:py-6">
-  <div class="w-full max-w-md bg-white dark:bg-slate-950 border border-slate-200/70 dark:border-slate-800 shadow-2xl rounded-[32px] p-8 space-y-6">
+<body class="flex min-h-screen items-center justify-center py-8 bg-slate-100 dark:bg-slate-950">
+  <div class="w-full max-w-lg bg-white dark:bg-slate-950 border border-slate-200/70 dark:border-slate-800 shadow-soft rounded-[32px] p-8 space-y-6 fade-in">
     <div class="space-y-2 text-center">
       <p class="text-[11px] uppercase tracking-[0.32em] text-indigo-500">Secure access</p>
       <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Welcome back</h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400">Sign in to manage your finances.</p>
+      <p class="mx-auto max-w-md text-sm text-slate-500 dark:text-slate-400">Sign in to manage your finances with a private and polished experience.</p>
     </div>
 
     <div id="authError" class="hidden rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm"></div>
@@ -120,7 +120,37 @@
     </form>
 
     <p class="text-center text-sm text-slate-500 dark:text-slate-400">Don’t have an account? <a href="register.html" class="font-semibold text-indigo-600 hover:text-indigo-700">Register</a></p>
-    <p class="text-center text-sm text-slate-400 mt-4">Back to <a href="index.html" class="font-semibold text-indigo-500 hover:text-indigo-400">FinTrack home</a>.</p>
+    <p class="text-center text-sm text-slate-400 mt-4">Back to <a href="home.html" class="font-semibold text-indigo-500 hover:text-indigo-400">FinTrack home</a>.</p>
+  </div>
+  <footer class="mt-6 w-full max-w-lg mx-auto text-sm text-slate-500 dark:text-slate-400">
+    <div class="rounded-3xl border border-slate-200/70 bg-white/80 p-5 dark:border-slate-800/70 dark:bg-slate-950/70 shadow-sm">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="font-semibold text-slate-900 dark:text-white">FinTrack</p>
+          <p>Designed with ❤️ by Sanjay Vaishya</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-3 text-slate-600 dark:text-slate-300">
+          <a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">About</a>
+          <a href="privacy.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Privacy</a>
+          <a href="cookies.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Cookies</a>
+          <a href="terms.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Terms</a>
+        </div>
+      </div>
+      <div class="mt-4 border-t border-slate-200/70 pt-4 text-center text-slate-500 dark:border-slate-800/70 dark:text-slate-400">
+        <p>Email: sanjayvaishya.dev@gmail.com • +91 9203251821</p>
+        <p class="mt-1">App version: v1.0.0</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookieBanner" class="fixed bottom-5 left-4 right-4 max-w-md mx-auto rounded-3xl border border-slate-200/80 bg-white/95 shadow-2xl p-5 backdrop-blur-md dark:border-slate-700/80 dark:bg-slate-950/95 hidden">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm text-slate-600 dark:text-slate-300">We use cookies to improve your experience.</p>
+      <div class="flex flex-wrap gap-3 justify-end">
+        <button id="declineCookies" class="rounded-full border border-slate-300 px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800">Decline</button>
+        <button id="acceptCookies" class="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">Accept All</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -299,7 +329,32 @@
       }
     };
 
+    const initCookieConsent = () => {
+      try {
+        const consent = localStorage.getItem('cookie_consent');
+        const banner = document.getElementById('cookieBanner');
+        if (!consent && banner) banner.classList.remove('hidden');
+      } catch (e) {
+        console.warn('Cookie consent init failed', e);
+      }
+    };
+
+    const setCookieConsent = (value) => {
+      try {
+        localStorage.setItem('cookie_consent', value);
+      } catch (e) {}
+      const banner = document.getElementById('cookieBanner');
+      if (banner) banner.classList.add('hidden');
+    };
+
     initAuth();
+    document.addEventListener('DOMContentLoaded', () => {
+      initCookieConsent();
+      const acceptBtn = document.getElementById('acceptCookies');
+      const declineBtn = document.getElementById('declineCookies');
+      if (acceptBtn) acceptBtn.addEventListener('click', () => setCookieConsent('accepted'));
+      if (declineBtn) declineBtn.addEventListener('click', () => setCookieConsent('declined'));
+    });
   </script>
 </body>
 </html>

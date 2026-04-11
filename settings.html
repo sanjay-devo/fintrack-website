@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Settings | FinTrack</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="FinTrack settings page for theme, account, sharing, and app preferences.">
+  <meta name="keywords" content="FinTrack settings, dark mode, share app, delete account">
+  <meta name="author" content="FinTrack">
+  <link rel="icon" type="image/jpeg" href="https://indiacybercafe.com/wp-content/uploads/2026/04/Fintech_logo_design.jpeg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          boxShadow: { soft: '0 18px 55px rgba(15, 23, 42, 0.1)' }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { min-height: 100vh; background: #f8fafc; color-scheme: light dark; }
+    .dark body { background: #070a14; }
+    .glass-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); border: 1px solid rgba(148,163,184,0.24); box-shadow: 0 18px 45px rgba(15,23,42,0.08); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .glass-card:hover { transform: translateY(-1px); box-shadow: 0 22px 55px rgba(15,23,42,0.1); }
+    .dark .glass-card { background: rgba(15,23,42,0.88); border-color: rgba(71,85,105,0.6); box-shadow: 0 18px 45px rgba(0,0,0,0.32); }
+    .page-header a { transition: color 0.2s ease; }
+    .setting-item { transition: background-color 0.2s ease, transform 0.2s ease; }
+    .setting-item:hover { transform: translateY(-1px); }
+    .setting-icon { min-width: 3rem; min-height: 3rem; }
+  </style>
+</head>
+<body class="font-sans text-slate-900 dark:text-slate-100">
+  <div class="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      <header class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <a href="index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-300 dark:hover:text-indigo-200">← Back to dashboard</a>
+          <p class="mt-6 text-xs uppercase tracking-[0.32em] text-indigo-500">Account settings</p>
+          <h1 class="mt-4 text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">Your FinTrack control center</h1>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">Manage theme, share the app, and keep your account data secure.</p>
+        </div>
+      </header>
+
+      <div class="glass-card rounded-[32px] border border-white/70 dark:border-slate-700/70 p-6 shadow-soft">
+        <div class="flex flex-col gap-6">
+          <div class="rounded-3xl bg-slate-50 dark:bg-slate-900/80 p-5 border border-slate-200/70 dark:border-slate-700/70 flex items-center gap-4">
+            <div id="profileAvatarLetter" class="setting-icon flex h-14 w-14 items-center justify-center rounded-3xl bg-indigo-600/10 text-indigo-700 dark:bg-indigo-400/15 dark:text-indigo-200 text-xl font-semibold">S</div>
+            <div>
+              <p class="text-base font-semibold text-slate-950 dark:text-white">FinTrack Profile</p>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Your app settings, theme, sharing, and account controls live here.</p>
+            </div>
+          </div>
+
+          <div class="grid gap-4">
+            <div class="setting-item w-full rounded-3xl border border-slate-200/70 dark:border-slate-700/70 bg-white dark:bg-slate-900/80 p-5 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition shadow-sm flex items-center justify-between gap-4">
+              <div class="flex items-center gap-4">
+                <span class="setting-icon flex h-12 w-12 items-center justify-center rounded-3xl bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-200">🌙</span>
+                <div>
+                  <p class="text-sm font-semibold text-slate-950 dark:text-white">Dark mode</p>
+                  <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">A smoother experience for night sessions.</p>
+                </div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input id="themeSwitch" type="checkbox" class="sr-only" />
+                <div class="w-14 h-7 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors"></div>
+                <span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform"></span>
+              </label>
+            </div>
+
+            <button id="shareButton" class="setting-item w-full rounded-3xl border border-slate-200/70 dark:border-slate-700/70 bg-white dark:bg-slate-900/80 p-5 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition shadow-sm flex items-center gap-4">
+              <span class="setting-icon flex h-12 w-12 items-center justify-center rounded-3xl bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-200">📤</span>
+              <div>
+                <p class="text-sm font-semibold text-slate-950 dark:text-white">Share FinTrack</p>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Send a fast link to colleagues or friends.</p>
+              </div>
+            </button>
+
+            <button id="rateButton" class="setting-item w-full rounded-3xl border border-slate-200/70 dark:border-slate-700/70 bg-white dark:bg-slate-900/80 p-5 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition shadow-sm flex items-center gap-4">
+              <span class="setting-icon flex h-12 w-12 items-center justify-center rounded-3xl bg-yellow-100 text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-200">⭐</span>
+              <div>
+                <p class="text-sm font-semibold text-slate-950 dark:text-white">Rate the app</p>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Help us improve with your feedback.</p>
+              </div>
+            </button>
+
+            <button id="deleteAccountButton" class="setting-item w-full rounded-3xl border border-rose-200 bg-rose-50/90 dark:border-rose-400/20 dark:bg-rose-500/10 p-5 text-left hover:bg-rose-100 dark:hover:bg-rose-500/20 transition shadow-sm flex items-center gap-4">
+              <span class="setting-icon flex h-12 w-12 items-center justify-center rounded-3xl bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-200">🗑️</span>
+              <div>
+                <p class="text-sm font-semibold text-rose-700 dark:text-rose-100">Delete account</p>
+                <p class="mt-1 text-sm text-rose-600 dark:text-rose-200">Remove your FinTrack profile and data for good.</p>
+              </div>
+            </button>
+          </div>
+
+          <p id="statusMessage" class="text-sm text-slate-600 dark:text-slate-300"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-500 dark:text-slate-400">
+    <div class="rounded-3xl border border-slate-200/70 bg-white/80 p-5 dark:border-slate-700/70 dark:bg-slate-950/70">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="font-semibold text-slate-900 dark:text-white">FinTrack</p>
+            <p>Designed with ❤️ by Sanjay Vaishya</p>
+          </div>
+          <div class="flex flex-wrap gap-3 text-slate-600 dark:text-slate-300">
+            <a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">About</a>
+            <a href="privacy.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Privacy</a>
+            <a href="cookies.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Cookies</a>
+            <a href="terms.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Terms</a>
+            <a href="mailto:sanjayvaishya.dev@gmail.com" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Contact</a>
+          </div>
+        </div>
+        <div class="mt-4 border-t border-slate-200/70 pt-4 text-slate-600 dark:border-slate-700/70 dark:text-slate-400 grid gap-3 sm:grid-cols-3">
+          <span>Email: sanjayvaishya.dev@gmail.com</span>
+          <span>Mobile: +91 9203251821</span>
+          <span>App version: v1.0.0</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookieBanner" class="fixed bottom-5 left-4 right-4 max-w-4xl mx-auto rounded-3xl border border-slate-200/80 bg-white/95 shadow-2xl p-5 backdrop-blur-md dark:border-slate-700/80 dark:bg-slate-950/95 hidden">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm text-slate-600 dark:text-slate-300">We use cookies to improve your experience.</p>
+      <div class="flex flex-wrap gap-3 justify-end">
+        <button id="declineCookies" class="rounded-full border border-slate-300 px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800">Decline</button>
+        <button id="acceptCookies" class="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">Accept All</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 p-4">
+    <div class="w-full max-w-md rounded-[32px] bg-white p-6 shadow-2xl dark:bg-slate-900">
+      <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Confirm delete</h2>
+      <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">This will remove your FinTrack user data and sign you out forever.</p>
+      <div class="mt-6 flex flex-wrap gap-3 justify-end">
+        <button id="cancelModal" class="rounded-full border border-slate-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Cancel</button>
+        <button id="confirmDelete" class="rounded-full bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const FIREBASE_BASE = 'https://fintrack-website-default-rtdb.firebaseio.com/';
+    const AUTH_STORAGE_KEY = 'fintrack_user';
+    const COOKIE_CONSENT_KEY = 'cookie_consent';
+    let currentUser = null;
+
+    const normalizeUserId = (value) => value.trim().toLowerCase().replace(/[@.#$\[\]\/]/g, '_');
+    const getSession = () => {
+      try {
+        const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    };
+    const clearSession = () => localStorage.removeItem(AUTH_STORAGE_KEY);
+    const getUserRefUrl = (userId) => `${FIREBASE_BASE}users/${encodeURIComponent(normalizeUserId(userId))}.json`;
+
+    const updateThemeSwitchUI = (isDark) => {
+      const themeSwitch = document.getElementById('themeSwitch');
+      if (!themeSwitch) return;
+      const track = themeSwitch.nextElementSibling;
+      const thumb = track ? track.nextElementSibling : null;
+      themeSwitch.checked = isDark;
+      if (thumb) thumb.style.transform = isDark ? 'translateX(28px)' : 'translateX(0)';
+      if (track) track.style.backgroundColor = isDark ? '#2563eb' : '';
+    };
+
+    const initTheme = () => {
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+        document.documentElement.classList.toggle('dark', isDark);
+        updateThemeSwitchUI(isDark);
+      } catch (e) {
+        console.warn('Theme init failed', e);
+      }
+    };
+
+    const initCookieConsent = () => {
+      try {
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        const banner = document.getElementById('cookieBanner');
+        if (!consent && banner) banner.classList.remove('hidden');
+      } catch (e) {
+        console.warn('Cookie consent init failed', e);
+      }
+    };
+
+    const setCookieConsent = (value) => {
+      try { localStorage.setItem(COOKIE_CONSENT_KEY, value); } catch (e) {}
+      const banner = document.getElementById('cookieBanner');
+      if (banner) banner.classList.add('hidden');
+    };
+
+    const updateStatus = (message) => {
+      const status = document.getElementById('statusMessage');
+      if (status) status.textContent = message;
+    };
+
+    const shareApp = async () => {
+      const url = window.location.origin + window.location.pathname.replace(/[^/]*$/, 'home.html');
+      const payload = { title: 'FinTrack', text: 'Control your money with FinTrack — the smart expense and income tracker.', url };
+      try {
+        if (navigator.share) {
+          await navigator.share(payload);
+          updateStatus('Thanks for sharing FinTrack!');
+          return;
+        }
+        await navigator.clipboard.writeText(url);
+        updateStatus('Link copied to clipboard. Share it with friends!');
+      } catch (e) {
+        updateStatus('Unable to share automatically, please copy the URL manually.');
+      }
+    };
+
+    const rateApp = () => {
+      alert('Thanks for rating FinTrack! Your feedback helps us improve.');
+    };
+
+    const deleteAccount = async () => {
+      const modal = document.getElementById('confirmModal');
+      if (modal) modal.classList.remove('hidden');
+    };
+
+    const closeModal = () => {
+      const modal = document.getElementById('confirmModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    const removeUserData = async () => {
+      if (!currentUser || !currentUser.id) {
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        await fetch(getUserRefUrl(currentUser.id), { method: 'DELETE' });
+      } catch (e) {
+        console.error('Unable to delete account data', e);
+      }
+      clearSession();
+      window.location.href = 'home.html';
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initCookieConsent();
+      currentUser = getSession();
+      if (!currentUser || !currentUser.id) {
+        window.location.href = 'login.html';
+        return;
+      }
+      document.getElementById('userName').textContent = currentUser.name || currentUser.id;
+      const profileAvatarLetter = document.getElementById('profileAvatarLetter');
+      if (profileAvatarLetter) {
+        const initial = (currentUser.name || currentUser.id || 'F').trim().charAt(0).toUpperCase();
+        profileAvatarLetter.textContent = initial;
+      }
+
+      const themeSwitch = document.getElementById('themeSwitch');
+      if (themeSwitch) {
+        themeSwitch.addEventListener('change', () => {
+          const isDark = themeSwitch.checked;
+          document.documentElement.classList.toggle('dark', isDark);
+          updateThemeSwitchUI(isDark);
+          try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+        });
+      }
+      const shareButton = document.getElementById('shareButton');
+      const rateButton = document.getElementById('rateButton');
+      const deleteButton = document.getElementById('deleteAccountButton');
+      const cancelModal = document.getElementById('cancelModal');
+      const confirmDelete = document.getElementById('confirmDelete');
+      const acceptBtn = document.getElementById('acceptCookies');
+      const declineBtn = document.getElementById('declineCookies');
+      if (shareButton) shareButton.addEventListener('click', shareApp);
+      if (rateButton) rateButton.addEventListener('click', rateApp);
+      if (deleteButton) deleteButton.addEventListener('click', deleteAccount);
+      if (cancelModal) cancelModal.addEventListener('click', closeModal);
+      if (confirmDelete) confirmDelete.addEventListener('click', async () => { await removeUserData(); });
+      if (acceptBtn) acceptBtn.addEventListener('click', () => setCookieConsent('accepted'));
+      if (declineBtn) declineBtn.addEventListener('click', () => setCookieConsent('declined'));
+    });
+  </script>
+</body>
+</html>

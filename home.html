@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FinTrack | Smart Expense & Income Tracker</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="FinTrack helps you track income, expenses, and savings with a clean dashboard built for modern finance management in India.">
+  <meta name="keywords" content="expense tracker, income tracker, budget app, finance management, money tracker">
+  <meta name="author" content="FinTrack">
+  <link rel="icon" type="image/jpeg" href="https://indiacybercafe.com/wp-content/uploads/2026/04/Fintech_logo_design.jpeg">
+  <meta property="og:title" content="FinTrack | Smart Expense & Income Tracker">
+  <meta property="og:description" content="Track your money, stay on budget, and grow savings with FinTrack's modern finance dashboard.">
+  <meta property="og:image" content="https://indiacybercafe.com/wp-content/uploads/2026/04/Fintech_logo_design.jpeg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FinTrack | Smart Expense & Income Tracker">
+  <meta name="twitter:description" content="Track your money, stay on budget, and grow savings with FinTrack's modern finance dashboard.">
+  <meta name="twitter:image" content="https://indiacybercafe.com/wp-content/uploads/2026/04/Fintech_logo_design.jpeg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          },
+          boxShadow: {
+            glow: '0 25px 80px rgba(59, 130, 246, 0.12)',
+            soft: '0 20px 50px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 0.22s ease, background 0.4s ease;
+      background: #f8fafc;
+      color-scheme: light dark;
+    }
+    body.ready { opacity: 1; }
+    .dark body {
+      background: #070a14;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.12);
+    }
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.86);
+      border-color: rgba(148, 163, 184, 0.12);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
+    }
+    .feature-icon {
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.16);
+    }
+    .dark .feature-icon {
+      background: rgba(59, 130, 246, 0.14);
+      border-color: rgba(56, 189, 248, 0.18);
+    }
+    .btn-soft {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .btn-soft:active {
+      transform: scale(0.97);
+    }
+    .section-title {
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #4338ca;
+    }
+    .fade-section {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    .fade-section.fade-in {
+      animation: fadeUp 0.9s ease forwards;
+    }
+    .fade-section.delay-1 { animation-delay: 0.14s; }
+    .fade-section.delay-2 { animation-delay: 0.26s; }
+    .fade-section.delay-3 { animation-delay: 0.38s; }
+    .fade-section.delay-4 { animation-delay: 0.48s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .soft-divider { border-color: rgba(148, 163, 184, 0.18); }
+  </style>
+</head>
+<body class="font-sans text-slate-900 dark:text-slate-100">
+  <script>
+    try {
+      const stored = localStorage.getItem('fintrack_user');
+      if (stored) {
+        window.location.href = 'index.html';
+      }
+    } catch (error) {
+      console.warn('Unable to access localStorage', error);
+    }
+    const initTheme = () => {
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+        document.documentElement.classList.toggle('dark', isDark);
+      } catch (error) {
+        console.warn('Theme init failed', error);
+      }
+    };
+    initTheme();
+    document.body.classList.add('ready');
+  </script>
+  <div class="relative overflow-hidden py-10 px-4 sm:px-6 lg:px-8">
+    <div class="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-indigo-500/10 via-transparent to-transparent pointer-events-none"></div>
+    <div class="relative max-w-7xl mx-auto">
+      <header class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between mb-12 fade-section delay-1">
+        <div class="flex items-center gap-4">
+          <div class="h-12 w-12 rounded-3xl bg-gradient-to-br from-indigo-600 to-sky-500 shadow-glow flex items-center justify-center text-white text-xl font-bold">F</div>
+          <div>
+            <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">FinTrack</p>
+            <p class="text-xs text-slate-400">Expense & income modern finance app</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-3 justify-center sm:justify-end">
+          <a href="login.html" class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/85 px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900/85 dark:text-slate-100 dark:hover:bg-slate-800">Login</a>
+          <a href="register.html" class="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700">Get Started Free</a>
+        </div>
+      </header>
+
+      <main class="grid gap-10 lg:grid-cols-[1.25fr_0.85fr] items-center">
+        <section class="space-y-8 fade-section delay-1">
+          <div class="max-w-xl">
+            <span class="inline-flex rounded-full bg-indigo-100 text-indigo-700 px-4 py-2 text-xs font-semibold dark:bg-indigo-900/45 dark:text-indigo-200">Modern personal finance for India</span>
+            <h1 class="mt-6 text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-slate-950 dark:text-white">Smart tracking for income, expenses, and savings — all in one place.</h1>
+            <p class="mt-6 text-base sm:text-lg text-slate-600 dark:text-slate-300">Track every rupee. Control your money effortlessly.</p>
+            <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+              <span>Trusted by 10,000+ users in India 🇮🇳</span>
+            </div>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2 max-w-xl">
+            <div class="glass-card p-6 rounded-[32px] border border-white/70 dark:border-slate-700/70">
+              <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Income</p>
+              <p class="mt-4 text-2xl font-semibold text-slate-950 dark:text-white">Track salary, freelance & business income</p>
+            </div>
+            <div class="glass-card p-6 rounded-[32px] border border-white/70 dark:border-slate-700/70">
+              <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Expense</p>
+              <p class="mt-4 text-2xl font-semibold text-slate-950 dark:text-white">Control daily expenses (food, travel, bills)</p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-4">
+            <a href="register.html" class="inline-flex items-center justify-center rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 btn-soft">Get Started Free</a>
+            <a href="login.html" class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/90 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:-translate-y-0.5 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-100">Login</a>
+          </div>
+          <p class="mt-3 max-w-lg text-sm text-slate-600 dark:text-slate-300">No signup needed to explore demo • Secure & private by design.</p>
+        </section>
+
+        <section class="relative fade-section delay-2">
+          <div class="glass-card rounded-[40px] p-8 overflow-hidden">
+            <div class="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-indigo-500/10 blur-3xl"></div>
+            <div class="absolute -left-10 bottom-8 h-24 w-24 rounded-full bg-sky-400/10 blur-3xl"></div>
+            <div class="space-y-6">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-sm text-slate-500 dark:text-slate-400">Monthly target</p>
+                  <p class="mt-2 text-3xl font-semibold text-slate-950 dark:text-white">₹ 42,755</p>
+                </div>
+                <span class="inline-flex rounded-full bg-emerald-100 text-emerald-700 px-3 py-1 text-xs font-semibold dark:bg-emerald-500/10 dark:text-emerald-200">On track</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <div class="h-full w-3/4 rounded-full bg-indigo-500"></div>
+              </div>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div class="p-4 rounded-3xl bg-white/70 dark:bg-slate-950/80 border border-slate-200/70 dark:border-slate-700/70">
+                  <p class="text-xs uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">Income</p>
+                  <p class="mt-3 text-xl font-semibold text-slate-950 dark:text-white">₹ 24,350</p>
+                </div>
+                <div class="p-4 rounded-3xl bg-white/70 dark:bg-slate-950/80 border border-slate-200/70 dark:border-slate-700/70">
+                  <p class="text-xs uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">Expenses</p>
+                  <p class="mt-3 text-xl font-semibold text-slate-950 dark:text-white">₹ 7,920</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <section class="mt-20 grid gap-10 lg:grid-cols-2 items-start">
+        <div class="fade-section delay-3">
+          <div class="inline-flex items-center rounded-full bg-indigo-100/80 px-4 py-2 text-sm font-semibold text-indigo-700 dark:bg-indigo-900/35 dark:text-indigo-200">How it works</div>
+          <h2 class="mt-6 text-3xl font-semibold text-slate-950 dark:text-white">Three simple steps to stay in control.</h2>
+          <p class="mt-4 max-w-xl text-slate-600 dark:text-slate-300">FinTrack keeps money management focused with easy entry, automated categorization, and clear balance monitoring.</p>
+          <div class="mt-8 space-y-5">
+            <div class="glass-card p-6 rounded-[28px] border border-white/70 dark:border-slate-700/70">
+              <div class="flex items-center gap-4">
+                <div class="feature-icon h-12 w-12 rounded-3xl flex items-center justify-center text-indigo-700 dark:text-indigo-200">1</div>
+                <div>
+                  <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Add income/expense</h3>
+                  <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Quickly log salary, bills or cash flow in seconds.</p>
+                </div>
+              </div>
+            </div>
+            <div class="glass-card p-6 rounded-[28px] border border-white/70 dark:border-slate-700/70">
+              <div class="flex items-center gap-4">
+                <div class="feature-icon h-12 w-12 rounded-3xl flex items-center justify-center text-indigo-700 dark:text-indigo-200">2</div>
+                <div>
+                  <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Track instantly</h3>
+                  <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">See updated totals and spending trends right away.</p>
+                </div>
+              </div>
+            </div>
+            <div class="glass-card p-6 rounded-[28px] border border-white/70 dark:border-slate-700/70">
+              <div class="flex items-center gap-4">
+                <div class="feature-icon h-12 w-12 rounded-3xl flex items-center justify-center text-indigo-700 dark:text-indigo-200">3</div>
+                <div>
+                  <h3 class="text-lg font-semibold text-slate-950 dark:text-white">See balance</h3>
+                  <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Know your net position with a clean balance view.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6 fade-section delay-2">
+          <div class="glass-card rounded-[32px] p-8 border border-white/70 dark:border-slate-700/70">
+            <div class="flex items-center justify-between gap-4 pb-4 border-b border-slate-200/70 dark:border-slate-700/70">
+              <div>
+                <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Core features</p>
+                <h3 class="mt-3 text-2xl font-semibold text-slate-950 dark:text-white">Everything your money needs.</h3>
+              </div>
+            </div>
+            <div class="mt-6 space-y-5">
+              <div class="flex items-start gap-4 p-4 rounded-3xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700/80">
+                <div class="flex h-12 w-12 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-400 text-white shadow-soft">₹</div>
+                <div>
+                  <p class="font-semibold text-slate-950 dark:text-white">Income insights</p>
+                  <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Track salary, business, and freelance revenue with instant totals.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 rounded-3xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700/80">
+                <div class="flex h-12 w-12 items-center justify-center rounded-3xl bg-gradient-to-br from-rose-500 to-pink-400 text-white shadow-soft">−</div>
+                <div>
+                  <p class="font-semibold text-slate-950 dark:text-white">Expense control</p>
+                  <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Categorize daily spending and keep bills, groceries, and travel in view.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 rounded-3xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700/80">
+                <div class="flex h-12 w-12 items-center justify-center rounded-3xl bg-gradient-to-br from-sky-500 to-indigo-500 text-white shadow-soft">⚖</div>
+                <div>
+                  <p class="font-semibold text-slate-950 dark:text-white">Balance clarity</p>
+                  <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">See the difference between income and expense with a clean balance snapshot.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-16 fade-section delay-4">
+        <div class="max-w-4xl mx-auto bg-white/90 dark:bg-slate-900/80 glass-card rounded-[32px] border border-slate-200/70 dark:border-slate-700/70 p-8 shadow-soft">
+          <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm uppercase tracking-[0.35em] text-indigo-600 dark:text-indigo-300">What users say</p>
+              <p class="mt-3 text-2xl font-semibold text-slate-950 dark:text-white">"This app helped me finally control my spending!"</p>
+            </div>
+            <div class="inline-flex items-center gap-2 rounded-full bg-indigo-600/10 px-4 py-2 text-sm font-semibold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-200">
+              <span>⭐ 4.8/5</span><span class="text-slate-500 dark:text-slate-400">• 10,000+ users</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="mt-20 border-t border-slate-200/70 pt-8 dark:border-slate-700/60">
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-slate-950 dark:text-white">FinTrack</p>
+              <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Designed with ❤️ by Sanjay Vaishya</p>
+            </div>
+            <div class="flex flex-wrap gap-3 text-sm text-slate-600 dark:text-slate-400">
+              <a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">About</a>
+              <a href="privacy.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Privacy</a>
+              <a href="cookies.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Cookies</a>
+              <a href="terms.html" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Terms</a>
+              <a href="mailto:sanjayvaishya.dev@gmail.com" class="hover:text-indigo-600 dark:hover:text-indigo-300 hover:underline decoration-indigo-500/30">Contact</a>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2 border-t border-slate-200/60 pt-4 text-sm text-slate-500 dark:border-slate-700/60 dark:text-slate-400 sm:flex-row sm:justify-between sm:items-center">
+            <span>Email: sanjayvaishya.dev@gmail.com</span>
+            <span>Mobile: +91 9203251821</span>
+            <span>App version: v1.0.0</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="cookieBanner" class="fixed bottom-5 left-4 right-4 max-w-4xl mx-auto rounded-3xl border border-slate-200/80 bg-white/95 shadow-2xl p-5 backdrop-blur-md dark:border-slate-700/80 dark:bg-slate-950/95 hidden">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm text-slate-600 dark:text-slate-300">We use cookies to improve your experience.</p>
+      <div class="flex flex-wrap gap-3 justify-end">
+        <button id="declineCookies" class="rounded-full border border-slate-300 px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800">Decline</button>
+        <button id="acceptCookies" class="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">Accept All</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const COOKIE_CONSENT_KEY = 'cookie_consent';
+    const initCookieConsent = () => {
+      try {
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        const banner = document.getElementById('cookieBanner');
+        if (!consent && banner) banner.classList.remove('hidden');
+      } catch (e) {
+        console.warn('Cookie consent init failed', e);
+      }
+    };
+    const setCookieConsent = (value) => {
+      try {
+        localStorage.setItem(COOKIE_CONSENT_KEY, value);
+      } catch (e) {}
+      const banner = document.getElementById('cookieBanner');
+      if (banner) banner.classList.add('hidden');
+    };
+    document.addEventListener('DOMContentLoaded', () => {
+      initCookieConsent();
+      const acceptBtn = document.getElementById('acceptCookies');
+      const declineBtn = document.getElementById('declineCookies');
+      if (acceptBtn) acceptBtn.addEventListener('click', () => setCookieConsent('accepted'));
+      if (declineBtn) declineBtn.addEventListener('click', () => setCookieConsent('declined'));
+
+      const fadeSections = document.querySelectorAll('.fade-section');
+      const splashObserver = ('IntersectionObserver' in window) ? new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16 }) : null;
+
+      fadeSections.forEach(section => {
+        if (splashObserver) {
+          splashObserver.observe(section);
+        } else {
+          section.classList.add('fade-in');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
