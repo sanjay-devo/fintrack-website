@@ -135,6 +135,58 @@
     const FIREBASE_BASE = 'https://fintrack-website-default-rtdb.firebaseio.com/';
     const AUTH_STORAGE_KEY = 'fintrack_user';
 
+    const canUseHistoryApi = () => {
+      try {
+        if (window.self !== window.top) return false;
+        if (!window.history || typeof window.history.replaceState !== 'function' || typeof window.history.pushState !== 'function') return false;
+        const currentUrl = window.location && window.location.href ? window.location.href : '';
+        if (!currentUrl || currentUrl.startsWith('about:')) return false;
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    const safeHistory = {
+      replaceState: (state, title, url) => {
+        if (!canUseHistoryApi()) {
+          if (url && url.startsWith('#')) {
+            try { window.location.hash = url; } catch (e) {}
+          }
+          return false;
+        }
+        try {
+          window.history.replaceState(state, title, url);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      pushState: (state, title, url) => {
+        if (!canUseHistoryApi()) {
+          if (url && url.startsWith('#')) {
+            try { window.location.hash = url; } catch (e) {}
+          }
+          return false;
+        }
+        try {
+          window.history.pushState(state, title, url);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      addPopstateListener: (handler) => {
+        if (!canUseHistoryApi()) return null;
+        try {
+          window.addEventListener('popstate', handler);
+          return handler;
+        } catch (e) {
+          return null;
+        }
+      }
+    };
+
     const normalizeUserId = (value) => {
       return value.trim().toLowerCase().replace(/[@.#$\[\]\/]/g, '_');
     };
@@ -227,7 +279,7 @@
     };
 
     const redirectToDashboard = () => {
-      history.replaceState({ page: 'dashboard' }, '', 'index.html');
+      safeHistory.replaceState({ page: 'dashboard' }, '', 'index.html');
       window.location.href = 'index.html';
     };
 
@@ -238,8 +290,8 @@
         redirectToDashboard();
         return;
       }
-      history.replaceState({ page: 'auth' }, '', window.location.href);
-      window.addEventListener('popstate', () => {
+      safeHistory.replaceState({ page: 'auth' }, '', window.location.href);
+      safeHistory.addPopstateListener(() => {
         const session = getSession();
         if (session && session.id) {
           redirectToDashboard();

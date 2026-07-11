@@ -251,6 +251,58 @@
     let transactions = [];
     let activeSuggestion = null;
 
+    const canUseHistoryApi = () => {
+      try {
+        if (window.self !== window.top) return false;
+        if (!window.history || typeof window.history.replaceState !== 'function' || typeof window.history.pushState !== 'function') return false;
+        const currentUrl = window.location && window.location.href ? window.location.href : '';
+        if (!currentUrl || currentUrl.startsWith('about:')) return false;
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    const safeHistory = {
+      replaceState: (state, title, url) => {
+        if (!canUseHistoryApi()) {
+          if (url && url.startsWith('#')) {
+            try { window.location.hash = url; } catch (e) {}
+          }
+          return false;
+        }
+        try {
+          window.history.replaceState(state, title, url);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      pushState: (state, title, url) => {
+        if (!canUseHistoryApi()) {
+          if (url && url.startsWith('#')) {
+            try { window.location.hash = url; } catch (e) {}
+          }
+          return false;
+        }
+        try {
+          window.history.pushState(state, title, url);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      addPopstateListener: (handler) => {
+        if (!canUseHistoryApi()) return null;
+        try {
+          window.addEventListener('popstate', handler);
+          return handler;
+        } catch (e) {
+          return null;
+        }
+      }
+    };
+
     const normalizeUserId = (value) => {
       return value.trim().toLowerCase().replace(/[@.#$\[\]\/]/g, '_');
     };
@@ -293,7 +345,7 @@
 
     const redirectToLogin = () => {
       clearSession();
-      history.replaceState({ page: 'login' }, '', 'login.html');
+      safeHistory.replaceState({ page: 'login' }, '', 'login.html');
       window.location.replace('login.html');
     };
 
@@ -373,7 +425,7 @@
         addPage.classList.remove('page-active');
         addPage.classList.add('page-hidden');
       }
-      history.replaceState({ page: 'dashboard' }, '', 'index.html');
+      safeHistory.replaceState({ page: 'dashboard' }, '', 'index.html');
     };
 
     const showAddPage = () => {
@@ -394,7 +446,7 @@
         showDashboard();
       } else if (pageId === 'addPage') {
         showAddPage();
-        history.pushState({ page: 'add' }, '', '#add');
+        safeHistory.pushState({ page: 'add' }, '', '#add');
       }
     };
 
@@ -622,7 +674,6 @@
       try {
         transactions = await fetchUserTransactions();
       } catch (e) {
-        console.error('Error loading transactions:', e);
         transactions = [];
       }
     };
@@ -643,11 +694,11 @@
       updateWelcomeMessage();
       await loadTransactions();
       renderApp();
-      history.replaceState({ page: 'dashboard' }, '', 'index.html');
+      safeHistory.replaceState({ page: 'dashboard' }, '', 'index.html');
       showDashboard();
     };
 
-    window.addEventListener('popstate', (event) => {
+    safeHistory.addPopstateListener((event) => {
       if (!currentUser || !currentUser.id) {
         showHomePage();
         return;
